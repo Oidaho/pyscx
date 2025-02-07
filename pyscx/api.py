@@ -6,7 +6,7 @@ from cachetools import TTLCache, cached
 from .region import Region
 
 # Caching the results of accessing query interfaces
-short_cache = TTLCache(maxsize=100, ttl=2)
+short_cache = TTLCache(maxsize=100, ttl=1)
 long_cahce = TTLCache(maxsize=10, ttl=3600)
 
 
@@ -36,6 +36,14 @@ class API(object):
 
         self.session = self.__make_session()
 
+    def __make_session(self) -> requests.Session:
+        session = requests.Session()
+        session.headers.update({"Content-Type": "application/json"})
+        return session
+
+    def _include_access_token(self, token) -> None:
+        self.session.headers.update({"Authorization": f"Bearer {token}"})
+
     def get_server_url(self) -> str:
         """Returns the URL of the current STALCRAFT: X API server.
 
@@ -43,11 +51,6 @@ class API(object):
             str: API server URL
         """
         return f"https://{self.server}.stalcraft.net/"
-
-    def __make_session(self) -> requests.Session:
-        session = requests.Session()
-        session.headers.update({"Content-Type": "application/json"})
-        return session
 
     @cached(long_cahce)
     def get_regions(self) -> list[Region]:
@@ -57,8 +60,12 @@ class API(object):
 
 
 class UserAPI(API):
-    pass
+    def __init__(self, user_token: str, server: Server | str = "dapi") -> None:
+        super().__init__(server=server)
+        self._include_access_token(user_token)
 
 
 class ApplicationAPI(API):
-    pass
+    def __init__(self, application_token: str, server: Server | str = "dapi") -> None:
+        super().__init__(server=server)
+        self._include_access_token(application_token)
