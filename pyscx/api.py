@@ -1,11 +1,6 @@
 from enum import Enum
 
 import requests
-from cachetools import TTLCache
-
-# Caching the results of accessing query interfaces
-short_cache = TTLCache(maxsize=100, ttl=1)
-long_cahce = TTLCache(maxsize=10, ttl=3600)
 
 
 class Server(Enum):
@@ -13,6 +8,19 @@ class Server(Enum):
 
     DEMO = "dapi"
     PRODUCTION = "eapi"
+
+
+class APISession(requests.Session):
+    def __init__(self, server_url):
+        super().__init__()
+        self.base_url = server_url.rstrip("/")
+
+    def include_token(self, token) -> None:
+        self.headers.update({"Authorization": f"Bearer {token}"})
+
+    def request(self, method, url, *args, **kwargs):
+        full_url = f"{self.base_url}/{url.lstrip('/')}"
+        return super().request(method, full_url, *args, **kwargs)
 
 
 class API(object):
@@ -28,21 +36,17 @@ class API(object):
         elif server in Server:
             self.server = server
         else:
-            raise ValueError(
-                f"Invalid server value: {server}. Expected an instance of 'Server' or 'str'."
-            )
+            raise ValueError(f"Invalid server value: '{server}'.")
 
         self.session = self.__make_session()
 
-    def __make_session(self) -> requests.Session:
-        session = requests.Session()
-        session.headers.update({"Content-Type": "application/json"})
-        return session
+    def __make_session(self) -> APISession:
+        http_session = APISession(self.server_url)
+        http_session.headers.update({"Content-Type": "application/json"})
+        return http_session
 
-    def _include_access_token(self, token) -> None:
-        self.session.headers.update({"Authorization": f"Bearer {token}"})
-
-    def get_server_url(self) -> str:
+    @property
+    def server_url(self) -> str:
         """Returns the URL of the current STALCRAFT: X API server.
 
         Returns:
@@ -56,7 +60,7 @@ class API(object):
 class UserAPI(API):
     def __init__(self, user_token: str, server: Server | str = "dapi") -> None:
         super().__init__(server=server)
-        self._include_access_token(user_token)
+        self.session.include_token(token=user_token)
 
     friends: any = ...
     characters: any = ...
@@ -66,7 +70,7 @@ class UserAPI(API):
 class ApplicationAPI(API):
     def __init__(self, application_token: str, server: Server | str = "dapi") -> None:
         super().__init__(server=server)
-        self._include_access_token(application_token)
+        self.session.include_token(token=application_token)
 
     emission: any = ...
     character: any = ...
