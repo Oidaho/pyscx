@@ -41,9 +41,12 @@ class API(object):
         self.session = self.__make_session()
 
     def __make_session(self) -> APISession:
-        http_session = APISession(self.server_url)
-        http_session.headers.update({"Content-Type": "application/json"})
-        return http_session
+        session = APISession(self.server_url)
+        session.headers.update({"Content-Type": "application/json"})
+        session.headers.update(
+            {"User-Agent": "pyscx/1.0.0 (+https://github.com/Oidaho/pyscx)"}
+        )
+        return session
 
     @property
     def server_url(self) -> str:
