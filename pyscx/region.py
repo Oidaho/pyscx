@@ -1,4 +1,7 @@
-class Region(object):
+from .base import StalcraftObject
+
+
+class Region(StalcraftObject):
     def __init__(self, id: int = None, name: str = None, *args, **kwargs) -> None:
         # The ability to transfer documents explicitly or as an unpacked dictionary
         for attr, value in {"id": id, "name": name}.items():
