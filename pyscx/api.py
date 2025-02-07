@@ -1,9 +1,7 @@
 from enum import Enum
 
 import requests
-from cachetools import TTLCache, cached
-
-from .region import Region
+from cachetools import TTLCache
 
 # Caching the results of accessing query interfaces
 short_cache = TTLCache(maxsize=100, ttl=1)
@@ -51,12 +49,6 @@ class API(object):
             str: API server URL
         """
         return f"https://{self.server}.stalcraft.net/"
-
-    @cached(long_cahce)
-    def get_regions(self) -> list[Region]:
-        url = self.get_server_url() + "regions"
-        response = self.session.get(url)
-        return [Region(**region_data) for region_data in response.json()]
 
 
 class UserAPI(API):
