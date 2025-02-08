@@ -1,8 +1,7 @@
-from abc import ABC, abstractmethod
 from enum import Enum
 
 from .http import APISession
-from .methods import Regions
+from .token import Token, TokenType
 
 
 class Server(Enum):
@@ -12,7 +11,7 @@ class Server(Enum):
     PRODUCTION = "eapi"
 
 
-class BaseAPI(ABC):
+class BaseAPI(object):
     """Base API class for STALCRAFT:X.
     Includes API configuration methods.
     """
@@ -47,43 +46,12 @@ class BaseAPI(ABC):
         """
         return f"https://{self.server}.stalcraft.net/"
 
-    @abstractmethod
-    def __init_api_methods__(self) -> None:
-        """_summary_"""
+    def __getattribute__(self) -> str:
         pass
 
 
 class API(BaseAPI):
-    def __init__(self, server: Server | str = "dapi") -> None:
+    def __init__(self, token: Token, server: Server | str = "dapi") -> None:
         super().__init__(server=server)
-        self.__init_api_methods__()
-
-    def __init_api_methods__(self) -> None:
-        self.regions = Regions(self.session)
-
-
-class UserAPI(API):
-    def __init__(self, user_token: str, server: Server | str = "dapi") -> None:
-        super().__init__(server=server)
-        self.session.include_token(token=user_token)
-        self.__init_api_methods__()
-
-    def __init_api_methods__(self) -> None:
-        super().__init_api_methods__()
-        self.friends: any = ...
-        self.characters: any = ...
-        self.clan: any = ...
-
-
-class ApplicationAPI(API):
-    def __init__(self, application_token: str, server: Server | str = "dapi") -> None:
-        super().__init__(server=server)
-        self.session.include_token(token=application_token)
-        self.__init_api_methods__()
-
-    def __init_api_methods__(self) -> None:
-        super().__init_api_methods__()
-        self.emission: any = ...
-        self.character: any = ...
-        self.clans: any = ...
-        self.auction: any = ...
+        self.token = token
+        self.session.include_token(token=self.token.value)
