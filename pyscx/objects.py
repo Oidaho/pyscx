@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 
 class APIObject(BaseModel):
     def raw(self) -> dict[str, Any]:
-        return self.model_dump(by_alias=True)
+        return self.model_dump(by_alias=True, mode="json")
 
 
 # ! REGION SCHEMAS
