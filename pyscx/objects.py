@@ -1,9 +1,12 @@
-from pydantic import Annotated, BaseModel, Field, datetime
+from datetime import datetime
 from enum import Enum
+from typing import Annotated, Any
+
+from pydantic import BaseModel, Field
 
 
 class APIObject(BaseModel):
-    def raw(self) -> dict[str, any]:
+    def raw(self) -> dict[str, Any]:
         return self.model_dump(by_alias=True)
 
 
@@ -32,14 +35,14 @@ class AuctionLot(APIObject):
     buyout_price: Annotated[int, Field(alias="buyoutPrice")]
     start_time: Annotated[datetime, Field(alias="startTime")]
     end_time: Annotated[datetime, Field(alias="endTime")]
-    additional: Annotated[dict[str, any], Field(alias="dict")]
+    additional: Annotated[dict[str, Any], Field(alias="dict")]
 
 
 class AuctionRedeemedLot(APIObject):
     amount: Annotated[int, Field(alias="amount")]
     price: Annotated[int, Field(alias="price")]
     time: Annotated[datetime, Field(alias="time")]
-    additional: Annotated[dict[str, any], Field(alias="dict")]
+    additional: Annotated[dict[str, Any], Field(alias="dict")]
 
 
 # ! CLAN SCHEMAS
@@ -87,7 +90,7 @@ class CharacterStatType(Enum):
 class CharacterStat(APIObject):
     id: Annotated[str, Field(alias="id")]
     type: Annotated[CharacterStatType, Field(alias="type")]
-    value: Annotated[dict[str, any], Field(alias="dict")]
+    value: Annotated[dict[str, Any], Field(alias="dict")]
 
 
 class CharacterMeta(APIObject):
