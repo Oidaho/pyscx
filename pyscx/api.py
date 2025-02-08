@@ -1,6 +1,8 @@
+from abc import ABC, abstractmethod
 from enum import Enum
 
 from .http import APISession
+from .methods import Regions
 
 
 class Server(Enum):
@@ -10,11 +12,9 @@ class Server(Enum):
     PRODUCTION = "eapi"
 
 
-class API(object):
+class BaseAPI(ABC):
     """Base API class for STALCRAFT:X.
-    Includes API configuration methods and interfaces
-    for executing requests that neither require an
-    authorization key nor depend on a specific region.
+    Includes API configuration methods.
     """
 
     def __init__(self, server: Server | str = "dapi") -> None:
@@ -47,25 +47,43 @@ class API(object):
         """
         return f"https://{self.server}.stalcraft.net/"
 
-    regions: any = ...
+    @abstractmethod
+    def __init_api_methods__(self) -> None:
+        """_summary_"""
+        pass
+
+
+class API(BaseAPI):
+    def __init__(self, server: Server | str = "dapi") -> None:
+        super().__init__(server=server)
+        self.__init_api_methods__()
+
+    def __init_api_methods__(self) -> None:
+        self.regions = Regions(self.session)
 
 
 class UserAPI(API):
     def __init__(self, user_token: str, server: Server | str = "dapi") -> None:
         super().__init__(server=server)
         self.session.include_token(token=user_token)
+        self.__init_api_methods__()
 
-    friends: any = ...
-    characters: any = ...
-    clan: any = ...
+    def __init_api_methods__(self) -> None:
+        super().__init_api_methods__()
+        self.friends: any = ...
+        self.characters: any = ...
+        self.clan: any = ...
 
 
 class ApplicationAPI(API):
     def __init__(self, application_token: str, server: Server | str = "dapi") -> None:
         super().__init__(server=server)
         self.session.include_token(token=application_token)
+        self.__init_api_methods__()
 
-    emission: any = ...
-    character: any = ...
-    clans: any = ...
-    auction: any = ...
+    def __init_api_methods__(self) -> None:
+        super().__init_api_methods__()
+        self.emission: any = ...
+        self.character: any = ...
+        self.clans: any = ...
+        self.auction: any = ...
