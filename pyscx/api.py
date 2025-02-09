@@ -56,11 +56,11 @@ class API(BaseAPI):
 
         # * Guarantee of the existence of the token
         for type in TokenType:
-            self.__api_tokens[f"{type.value}_token"] = None
+            self.__api_tokens[type] = None
 
         tokens = [tokens] if isinstance(tokens, Token) else tokens
         for token in tokens:
             try:
-                self.__api_tokens[f"{token.type.value}_token"] = token.value
+                self.__api_tokens[token.type] = token.value
             except KeyError:
                 raise ValueError("Passed token with unxecepted type.")
