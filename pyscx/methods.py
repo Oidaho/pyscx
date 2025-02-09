@@ -48,3 +48,27 @@ class FriendsGroup(APIMethodGroup):
         )
 
         return response.json()
+
+
+class AuctionGroup(APIMethodGroup):
+    def get_item_history(self, region: str, item_id: str, token: str) -> list[AuctionRedeemedLot]:
+        request_path = f"/{region}/auction/{item_id}/history"
+        response = self.session.request(
+            method="GET",
+            url=request_path,
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+        history = [AuctionRedeemedLot(**lot_data) for lot_data in response.json()["prices"]]
+        return history
+
+    def get_item_lots(self, region: str, item_id: str, token: str) -> list[AuctionLot]:
+        request_path = f"/{region}/auction/{item_id}/lots"
+        response = self.session.request(
+            method="GET",
+            url=request_path,
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+        lots = [AuctionLot(**lot_data) for lot_data in response.json()["lots"]]
+        return lots
