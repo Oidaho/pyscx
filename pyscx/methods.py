@@ -95,3 +95,37 @@ class CharactersGroup(APIMethodGroup):
         )
 
         return FullCharacterInfo(**response.json())
+
+
+class ClansGroup(APIMethodGroup):
+    def get_info(self, region: str, clan_id: str, token: str) -> Clan:
+        request_path = f"{region}/clan/{clan_id}/info"
+        response = self.session.request(
+            method="GET",
+            url=request_path,
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+        return Clan(**response.json())
+
+    def get_members(self, region: str, clan_id: str, token: str) -> list[ClanMember]:
+        request_path = f"{region}/clan/{clan_id}/members"
+        response = self.session.request(
+            method="GET",
+            url=request_path,
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+        clan_members = [ClanMember(**data) for data in response.json()]
+        return clan_members
+
+    def get_all(self, region: str, token: str) -> list[Clan]:
+        request_path = f"{region}/clans"
+        response = self.session.request(
+            method="GET",
+            url=request_path,
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+        clan_list = [Clan(**data) for data in response.json()]
+        return clan_list
