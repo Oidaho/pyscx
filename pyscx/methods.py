@@ -36,3 +36,15 @@ class EmissionsGroup(APIMethodGroup):
         )
 
         return Emission(**response.json())
+
+
+class FriendsGroup(APIMethodGroup):
+    def get_all(self, region: str, character_name: str, token: str) -> list[str]:
+        request_path = f"/{region}/friends/{character_name}"
+        response = self.session.request(
+            method="GET",
+            url=request_path,
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+        return response.json()
