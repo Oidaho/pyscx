@@ -57,3 +57,6 @@ class API(BaseAPI):
         # * Guarantee of the existence of the token attribute
         for type in TokenType:
             setattr(self, f"{type.value}_token", None)
+
+    def __init_token__(self, token: Token) -> None:
+        setattr(self, f"{token.type.value}_token", token.value)
