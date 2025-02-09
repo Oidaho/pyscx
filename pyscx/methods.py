@@ -1,4 +1,6 @@
+from functools import wraps
 from .http import APISession
+from .token import TokenType
 from .objects import (
     APIObject,
     AuctionLot,
@@ -13,8 +15,9 @@ from .objects import (
 
 
 class APIMethodGroup(object):
-    def __init__(self, session: APISession):
+    def __init__(self, session: APISession, tokens: dict[TokenType, str]):
         self.session = session
+        self.tokens = tokens
 
     def _request(
         self, path: str, region: str = "", token: str | None = None, model: APIObject | None = None
@@ -36,54 +39,81 @@ class APIMethodGroup(object):
         else:
             return data
 
+    @classmethod
+    def pass_token(cls, token_type: TokenType) -> callable:
+        def decorator(func):
+            @wraps(func)
+            def wrapper(self, *args, **kwargs):
+                token = self.tokens.get(token_type)
+                if token is None:
+                    raise PermissionError(
+                        f"This method is only available with a token of the type '{token_type}'. "
+                        "This type of token was not passed to the API."
+                    )
+                result = func(self, *args, token=token, **kwargs)
+                return result
+
+            return wrapper
+
+        return decorator
+
 
 class RegionsGroup(APIMethodGroup):
     def get_all(self) -> list[Region]:
         path = "/regions"
-        return self._request(path, model=Emission)
+        return self._request(path, model=Region)
 
 
 class EmissionsGroup(APIMethodGroup):
-    def get_info(self, region: str, token: str) -> Emission:
+    def get_info(self, region: str, **kwargs) -> Emission:
         path = "/emission"
+        token = kwargs.get("token")
         return self._request(path, region, token, Emission)
 
 
 class FriendsGroup(APIMethodGroup):
-    def get_all(self, region: str, character_name: str, token: str) -> list[str]:
+    def get_all(self, region: str, character_name: str, **kwargs) -> list[str]:
         path = f"/friends/{character_name}"
+        token = kwargs.get("token")
         return self._request(path, region, token)
 
 
 class AuctionGroup(APIMethodGroup):
-    def get_item_history(self, region: str, item_id: str, token: str) -> list[AuctionRedeemedLot]:
+    def get_item_history(self, region: str, item_id: str, **kwargs) -> list[AuctionRedeemedLot]:
         path = f"/auction/{item_id}/history"
+        token = kwargs.get("token")
         return self._request(path, region, token, AuctionRedeemedLot)
 
-    def get_item_lots(self, region: str, item_id: str, token: str) -> list[AuctionLot]:
+    def get_item_lots(self, region: str, item_id: str, **kwargs) -> list[AuctionLot]:
         path = f"/auction/{item_id}/lots"
+        token = kwargs.get("token")
         return self._request(path, region, token, AuctionLot)
 
 
 class CharactersGroup(APIMethodGroup):
-    def get_all(self, region: str, token: str) -> list[CharacterInfo]:
+    def get_all(self, region: str, **kwargs) -> list[CharacterInfo]:
         path = "/characters"
+        token = kwargs.get("token")
         return self._request(path, region, token, CharacterInfo)
 
-    def get_profile(self, region: str, character_name: str, token: str) -> FullCharacterInfo:
+    def get_profile(self, region: str, character_name: str, **kwargs) -> FullCharacterInfo:
         path = f"/character/by-name/{character_name}/profile"
+        token = kwargs.get("token")
         return self._request(path, region, token, FullCharacterInfo)
 
 
 class ClansGroup(APIMethodGroup):
-    def get_info(self, region: str, clan_id: str, token: str) -> Clan:
+    def get_info(self, region: str, clan_id: str, **kwargs) -> Clan:
         path = f"/clan/{clan_id}/info"
+        token = kwargs.get("token")
         return self._request(path, region, token, Clan)
 
-    def get_members(self, region: str, clan_id: str, token: str) -> list[ClanMember]:
+    def get_members(self, region: str, clan_id: str, **kwargs) -> list[ClanMember]:
         path = f"/clan/{clan_id}/members"
+        token = kwargs.get("token")
         return self._request(path, region, token, ClanMember)
 
-    def get_all(self, region: str, token: str) -> list[Clan]:
+    def get_all(self, region: str, **kwargs) -> list[Clan]:
         path = "/clans"
+        token = kwargs.get("token")
         return self._request(path, region, token, Clan)
