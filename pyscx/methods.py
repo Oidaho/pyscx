@@ -72,3 +72,26 @@ class AuctionGroup(APIMethodGroup):
 
         lots = [AuctionLot(**lot_data) for lot_data in response.json()["lots"]]
         return lots
+
+
+class CharactersGroup(APIMethodGroup):
+    def get_all(self, region: str, token: str) -> list[CharacterInfo]:
+        request_path = f"/{region}/characters"
+        response = self.session.request(
+            method="GET",
+            url=request_path,
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+        сcharacters_list = [CharacterInfo(**data) for data in response.json()]
+        return сcharacters_list
+
+    def get_profile(self, region: str, character_name: str, token: str) -> FullCharacterInfo:
+        request_path = f"/{region}/character/by-name/{character_name}/profile"
+        response = self.session.request(
+            method="GET",
+            url=request_path,
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+        return FullCharacterInfo(**response.json())
