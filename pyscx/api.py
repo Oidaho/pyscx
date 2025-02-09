@@ -2,6 +2,7 @@ from enum import Enum
 
 from .http import APISession
 from .token import Token, TokenType
+from typing import Collection
 
 
 class Server(Enum):
@@ -49,7 +50,7 @@ class BaseAPI(object):
 
 class API(BaseAPI):
     def __init__(
-        self, tokens: Token | list[Token], server: Server | str = "dapi"
+        self, tokens: Token | Collection[Token], server: Server | str = "dapi"
     ) -> None:
         super().__init__(server=server)
 
