@@ -40,7 +40,7 @@ class APIMethodGroup(object):
             return data
 
     @classmethod
-    def pass_token(cls, token_type: TokenType) -> callable:
+    def _pass_token(cls, token_type: TokenType) -> callable:
         def decorator(func):
             @wraps(func)
             def wrapper(self, *args, **kwargs):
@@ -65,7 +65,7 @@ class RegionsGroup(APIMethodGroup):
 
 
 class EmissionsGroup(APIMethodGroup):
-    @APIMethodGroup.pass_token(TokenType.APPLICATION)
+    @APIMethodGroup._pass_token(TokenType.APPLICATION)
     def get_info(self, region: str, **kwargs) -> Emission:
         path = "/emission"
         token = kwargs.get("token")
@@ -73,7 +73,7 @@ class EmissionsGroup(APIMethodGroup):
 
 
 class FriendsGroup(APIMethodGroup):
-    @APIMethodGroup.pass_token(TokenType.USER)
+    @APIMethodGroup._pass_token(TokenType.USER)
     def get_all(self, region: str, character_name: str, **kwargs) -> list[str]:
         path = f"/friends/{character_name}"
         token = kwargs.get("token")
@@ -81,13 +81,13 @@ class FriendsGroup(APIMethodGroup):
 
 
 class AuctionGroup(APIMethodGroup):
-    @APIMethodGroup.pass_token(TokenType.APPLICATION)
+    @APIMethodGroup._pass_token(TokenType.APPLICATION)
     def get_item_history(self, region: str, item_id: str, **kwargs) -> list[AuctionRedeemedLot]:
         path = f"/auction/{item_id}/history"
         token = kwargs.get("token")
         return self._request(path, region, token, AuctionRedeemedLot)
 
-    @APIMethodGroup.pass_token(TokenType.APPLICATION)
+    @APIMethodGroup._pass_token(TokenType.APPLICATION)
     def get_item_lots(self, region: str, item_id: str, **kwargs) -> list[AuctionLot]:
         path = f"/auction/{item_id}/lots"
         token = kwargs.get("token")
@@ -95,13 +95,13 @@ class AuctionGroup(APIMethodGroup):
 
 
 class CharactersGroup(APIMethodGroup):
-    @APIMethodGroup.pass_token(TokenType.USER)
+    @APIMethodGroup._pass_token(TokenType.USER)
     def get_all(self, region: str, **kwargs) -> list[CharacterInfo]:
         path = "/characters"
         token = kwargs.get("token")
         return self._request(path, region, token, CharacterInfo)
 
-    @APIMethodGroup.pass_token(TokenType.APPLICATION)
+    @APIMethodGroup._pass_token(TokenType.APPLICATION)
     def get_profile(self, region: str, character_name: str, **kwargs) -> FullCharacterInfo:
         path = f"/character/by-name/{character_name}/profile"
         token = kwargs.get("token")
@@ -109,19 +109,19 @@ class CharactersGroup(APIMethodGroup):
 
 
 class ClansGroup(APIMethodGroup):
-    @APIMethodGroup.pass_token(TokenType.APPLICATION)
+    @APIMethodGroup._pass_token(TokenType.APPLICATION)
     def get_info(self, region: str, clan_id: str, **kwargs) -> Clan:
         path = f"/clan/{clan_id}/info"
         token = kwargs.get("token")
         return self._request(path, region, token, Clan)
 
-    @APIMethodGroup.pass_token(TokenType.USER)
+    @APIMethodGroup._pass_token(TokenType.USER)
     def get_members(self, region: str, clan_id: str, **kwargs) -> list[ClanMember]:
         path = f"/clan/{clan_id}/members"
         token = kwargs.get("token")
         return self._request(path, region, token, ClanMember)
 
-    @APIMethodGroup.pass_token(TokenType.APPLICATION)
+    @APIMethodGroup._pass_token(TokenType.APPLICATION)
     def get_all(self, region: str, **kwargs) -> list[Clan]:
         path = "/clans"
         token = kwargs.get("token")
