@@ -51,39 +51,39 @@ class EmissionsGroup(APIMethodGroup):
 
 class FriendsGroup(APIMethodGroup):
     def get_all(self, region: str, character_name: str, token: str) -> list[str]:
-        path = f"friends/{character_name}"
+        path = f"/friends/{character_name}"
         return self._request(path, region, token)
 
 
 class AuctionGroup(APIMethodGroup):
     def get_item_history(self, region: str, item_id: str, token: str) -> list[AuctionRedeemedLot]:
-        path = f"auction/{item_id}/history"
+        path = f"/auction/{item_id}/history"
         return self._request(path, region, token, AuctionRedeemedLot)
 
     def get_item_lots(self, region: str, item_id: str, token: str) -> list[AuctionLot]:
-        path = f"auction/{item_id}/lots"
+        path = f"/auction/{item_id}/lots"
         return self._request(path, region, token, AuctionLot)
 
 
 class CharactersGroup(APIMethodGroup):
     def get_all(self, region: str, token: str) -> list[CharacterInfo]:
-        path = "characters"
+        path = "/characters"
         return self._request(path, region, token, CharacterInfo)
 
     def get_profile(self, region: str, character_name: str, token: str) -> FullCharacterInfo:
-        path = f"character/by-name/{character_name}/profile"
+        path = f"/character/by-name/{character_name}/profile"
         return self._request(path, region, token, FullCharacterInfo)
 
 
 class ClansGroup(APIMethodGroup):
     def get_info(self, region: str, clan_id: str, token: str) -> Clan:
-        path = f"clan/{clan_id}/info"
+        path = f"/clan/{clan_id}/info"
         return self._request(path, region, token, Clan)
 
     def get_members(self, region: str, clan_id: str, token: str) -> list[ClanMember]:
-        path = f"clan/{clan_id}/members"
+        path = f"/clan/{clan_id}/members"
         return self._request(path, region, token, ClanMember)
 
     def get_all(self, region: str, token: str) -> list[Clan]:
-        path = "clans"
+        path = "/clans"
         return self._request(path, region, token, Clan)
