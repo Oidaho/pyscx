@@ -23,7 +23,7 @@ class APIMethodGroup(object):
         response = self.session.request(
             method="GET",
             url=request_path,
-            headers={"Authorization": f"Bearer {token}"},
+            headers={"Authorization": f"Bearer {token}"} if token else {},
         )
         data = response.json()
 
