@@ -46,12 +46,14 @@ class BaseAPI(object):
         """
         return f"https://{self.server}.stalcraft.net/"
 
-    def __getattribute__(self) -> str:
-        pass
-
 
 class API(BaseAPI):
-    def __init__(self, token: Token, server: Server | str = "dapi") -> None:
+    def __init__(
+        self, tokens: Token | list[Token], server: Server | str = "dapi"
+    ) -> None:
         super().__init__(server=server)
-        self.token = token
         self.session.include_token(token=self.token.value)
+
+        # * Guarantee of the existence of the token attribute
+        for type in TokenType:
+            setattr(self, f"{type.value}_token", None)
