@@ -1,14 +1,14 @@
 from .http import APISession
-
 from .objects import (
-    Region,
-    Emission,
-    AuctionRedeemedLot,
+    APIObject,
     AuctionLot,
+    AuctionRedeemedLot,
     CharacterInfo,
-    FullCharacterInfo,
     Clan,
     ClanMember,
+    Emission,
+    FullCharacterInfo,
+    Region,
 )
 
 
@@ -16,116 +16,74 @@ class APIMethodGroup(object):
     def __init__(self, session: APISession):
         self.session = session
 
+    def _request(
+        self, path: str, region: str = "", token: str | None = None, model: APIObject | None = None
+    ) -> list[APIObject] | APIObject:
+        request_path = f"{region}/{path.lstrip('/')}"
+        response = self.session.request(
+            method="GET",
+            url=request_path,
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        data = response.json()
+
+        # If there is a need to wrap it in a APIObject
+        if model:
+            # If data is a list, turn it into a list of APIObject.
+            if isinstance(data, list):
+                return [model(**item) for item in data]
+            return model(**data)
+        else:
+            return data
+
 
 class RegionsGroup(APIMethodGroup):
     def get_all(self) -> list[Region]:
-        request_path = "/regions"
-        response = self.session.request(method="GET", url=request_path)
-
-        region_list = [Region(**region_data) for region_data in response.json()]
-        return region_list
+        path = "/regions"
+        return self._request(path, model=Emission)
 
 
 class EmissionsGroup(APIMethodGroup):
     def get_info(self, region: str, token: str) -> Emission:
-        request_path = f"/{region}/emission"
-        response = self.session.request(
-            method="GET",
-            url=request_path,
-            headers={"Authorization": f"Bearer {token}"},
-        )
-
-        return Emission(**response.json())
+        path = "/emission"
+        return self._request(path, region, token, Emission)
 
 
 class FriendsGroup(APIMethodGroup):
     def get_all(self, region: str, character_name: str, token: str) -> list[str]:
-        request_path = f"/{region}/friends/{character_name}"
-        response = self.session.request(
-            method="GET",
-            url=request_path,
-            headers={"Authorization": f"Bearer {token}"},
-        )
-
-        return response.json()
+        path = f"friends/{character_name}"
+        return self._request(path, region, token)
 
 
 class AuctionGroup(APIMethodGroup):
     def get_item_history(self, region: str, item_id: str, token: str) -> list[AuctionRedeemedLot]:
-        request_path = f"/{region}/auction/{item_id}/history"
-        response = self.session.request(
-            method="GET",
-            url=request_path,
-            headers={"Authorization": f"Bearer {token}"},
-        )
-
-        history = [AuctionRedeemedLot(**lot_data) for lot_data in response.json()["prices"]]
-        return history
+        path = f"auction/{item_id}/history"
+        return self._request(path, region, token, AuctionRedeemedLot)
 
     def get_item_lots(self, region: str, item_id: str, token: str) -> list[AuctionLot]:
-        request_path = f"/{region}/auction/{item_id}/lots"
-        response = self.session.request(
-            method="GET",
-            url=request_path,
-            headers={"Authorization": f"Bearer {token}"},
-        )
-
-        lots = [AuctionLot(**lot_data) for lot_data in response.json()["lots"]]
-        return lots
+        path = f"auction/{item_id}/lots"
+        return self._request(path, region, token, AuctionLot)
 
 
 class CharactersGroup(APIMethodGroup):
     def get_all(self, region: str, token: str) -> list[CharacterInfo]:
-        request_path = f"/{region}/characters"
-        response = self.session.request(
-            method="GET",
-            url=request_path,
-            headers={"Authorization": f"Bearer {token}"},
-        )
-
-        сcharacters_list = [CharacterInfo(**data) for data in response.json()]
-        return сcharacters_list
+        path = "characters"
+        return self._request(path, region, token, CharacterInfo)
 
     def get_profile(self, region: str, character_name: str, token: str) -> FullCharacterInfo:
-        request_path = f"/{region}/character/by-name/{character_name}/profile"
-        response = self.session.request(
-            method="GET",
-            url=request_path,
-            headers={"Authorization": f"Bearer {token}"},
-        )
-
-        return FullCharacterInfo(**response.json())
+        path = f"character/by-name/{character_name}/profile"
+        return self._request(path, region, token, FullCharacterInfo)
 
 
 class ClansGroup(APIMethodGroup):
     def get_info(self, region: str, clan_id: str, token: str) -> Clan:
-        request_path = f"{region}/clan/{clan_id}/info"
-        response = self.session.request(
-            method="GET",
-            url=request_path,
-            headers={"Authorization": f"Bearer {token}"},
-        )
-
-        return Clan(**response.json())
+        path = f"clan/{clan_id}/info"
+        return self._request(path, region, token, Clan)
 
     def get_members(self, region: str, clan_id: str, token: str) -> list[ClanMember]:
-        request_path = f"{region}/clan/{clan_id}/members"
-        response = self.session.request(
-            method="GET",
-            url=request_path,
-            headers={"Authorization": f"Bearer {token}"},
-        )
-
-        clan_members = [ClanMember(**data) for data in response.json()]
-        return clan_members
+        path = f"clan/{clan_id}/members"
+        return self._request(path, region, token, ClanMember)
 
     def get_all(self, region: str, token: str) -> list[Clan]:
-        request_path = f"{region}/clans"
-        response = self.session.request(
-            method="GET",
-            url=request_path,
-            headers={"Authorization": f"Bearer {token}"},
-        )
-
-        clan_list = [Clan(**data) for data in response.json()]
-        return clan_list
+        path = "clans"
+        return self._request(path, region, token, Clan)
