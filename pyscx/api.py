@@ -52,7 +52,6 @@ class API(BaseAPI):
         self, tokens: Token | list[Token], server: Server | str = "dapi"
     ) -> None:
         super().__init__(server=server)
-        self.session.include_token(token=self.token.value)
 
         # * Guarantee of the existence of the token attribute
         for type in TokenType:
