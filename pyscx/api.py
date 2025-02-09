@@ -2,7 +2,17 @@ from enum import Enum
 
 from .http import APISession
 from .token import Token, TokenType
-from typing import Collection
+from typing import Collection, Type
+
+from .methods import (
+    APIMethodGroup,
+    RegionsGroup,
+    EmissionsGroup,
+    FriendsGroup,
+    AuctionGroup,
+    CharactersGroup,
+    ClansGroup,
+)
 
 
 class Server(Enum):
@@ -51,6 +61,13 @@ class BaseAPI(object):
 class API(BaseAPI):
     __api_tokens: dict[TokenType, str] = {}
 
+    regions: RegionsGroup
+    emissions: EmissionsGroup
+    friends: FriendsGroup
+    auction: AuctionGroup
+    characters: CharactersGroup
+    clans: ClansGroup
+
     def __init__(self, tokens: Token | Collection[Token], server: Server | str = "dapi") -> None:
         super().__init__(server=server)
 
@@ -65,11 +82,16 @@ class API(BaseAPI):
             except KeyError:
                 raise ValueError("Passed token with unxecepted type.")
 
-    # Getting token as a class attribute
+        # Initializing the API methods
+        self.__init_methods__()
+
     def __getattr__(self, name):
         try:
+            # Default __getattr__
             return super().__getattr__(name)
-        except AttributeError:
+
+        except AttributeError as e:
+            # Getting token as a class attribute
             postfix = "_token"
             if name.endswith(postfix):
                 token_type = name.rstrip(postfix)
@@ -81,3 +103,18 @@ class API(BaseAPI):
                     )
 
                 return token
+
+            raise AttributeError(e)
+
+    def __init_methods__(self) -> None:
+        method_groups: dict[str, Type[APIMethodGroup]] = {
+            "regions": RegionsGroup,
+            "emissions": EmissionsGroup,
+            "friends": FriendsGroup,
+            "auction": AuctionGroup,
+            "characters": CharactersGroup,
+            "clans": ClansGroup,
+        }
+
+        for name, group_class in method_groups.items():
+            setattr(self, name, group_class(session=self.session, tokens=self.__api_tokens))
