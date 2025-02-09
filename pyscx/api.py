@@ -58,5 +58,9 @@ class API(BaseAPI):
         for type in TokenType:
             setattr(self, f"{type.value}_token", None)
 
+        tokens = [tokens] if isinstance(tokens, Token) else tokens
+        for token in tokens:
+            self.__init_token__(token)
+
     def __init_token__(self, token: Token) -> None:
         setattr(self, f"{token.type.value}_token", token.value)
