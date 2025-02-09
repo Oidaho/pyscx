@@ -49,18 +49,18 @@ class BaseAPI(object):
 
 
 class API(BaseAPI):
-    def __init__(
-        self, tokens: Token | Collection[Token], server: Server | str = "dapi"
-    ) -> None:
+    __api_tokens: dict[str, str] = {}
+
+    def __init__(self, tokens: Token | Collection[Token], server: Server | str = "dapi") -> None:
         super().__init__(server=server)
 
-        # * Guarantee of the existence of the token attribute
+        # * Guarantee of the existence of the token
         for type in TokenType:
-            setattr(self, f"{type.value}_token", None)
+            self.__api_tokens[f"{type.value}_token"] = None
 
         tokens = [tokens] if isinstance(tokens, Token) else tokens
         for token in tokens:
-            self.__init_token__(token)
-
-    def __init_token__(self, token: Token) -> None:
-        setattr(self, f"{token.type.value}_token", token.value)
+            try:
+                self.__api_tokens[f"{token.type.value}_token"] = token.value
+            except KeyError:
+                raise ValueError("Passed token with unxecepted type.")
