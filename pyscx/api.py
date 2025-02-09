@@ -49,7 +49,7 @@ class BaseAPI(object):
 
 
 class API(BaseAPI):
-    __api_tokens: dict[str, str] = {}
+    __api_tokens: dict[TokenType, str] = {}
 
     def __init__(self, tokens: Token | Collection[Token], server: Server | str = "dapi") -> None:
         super().__init__(server=server)
@@ -64,3 +64,20 @@ class API(BaseAPI):
                 self.__api_tokens[token.type] = token.value
             except KeyError:
                 raise ValueError("Passed token with unxecepted type.")
+
+    # Getting token as a class attribute
+    def __getattr__(self, name):
+        try:
+            return super().__getattr__(name)
+        except AttributeError:
+            postfix = "_token"
+            if name.endswith(postfix):
+                token_type = name.rstrip(postfix)
+                token = self.__api_tokens.get(TokenType(token_type))
+
+                if token is None:
+                    raise AttributeError(
+                        f"{self.__class__.__name__} object has no attribute '{name}'"
+                    )
+
+                return token
