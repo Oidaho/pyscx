@@ -1,6 +1,15 @@
 from .http import APISession
 
-from .objects import Region, Emission
+from .objects import (
+    Region,
+    Emission,
+    AuctionRedeemedLot,
+    AuctionLot,
+    CharacterInfo,
+    FullCharacterInfo,
+    Clan,
+    ClanMember,
+)
 
 
 class APIMethodGroup(object):
@@ -8,13 +17,22 @@ class APIMethodGroup(object):
         self.session = session
 
 
-class RegionsMethods(APIMethodGroup):
-    def get(self) -> list[Region]:
-        response = self.session.request(method="GET", url="/regions")
-        return [Region(**region_data) for region_data in response.json()]
+class RegionsGroup(APIMethodGroup):
+    def get_all(self) -> list[Region]:
+        request_path = "/regions"
+        response = self.session.request(method="GET", url=request_path)
+
+        region_list = [Region(**region_data) for region_data in response.json()]
+        return region_list
 
 
-class EmissionsMethods(APIMethodGroup):
-    def get(self, region: str) -> Emission:
-        response = self.session.request(method="GET", url=f"/{region}/emission")
+class EmissionsGroup(APIMethodGroup):
+    def get_info(self, region: str, token: str) -> Emission:
+        request_path = f"/{region}/emission"
+        response = self.session.request(
+            method="GET",
+            url=request_path,
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
         return Emission(**response.json())
