@@ -35,13 +35,13 @@
 Чтобы установить библиотеку, выполните следующую команду:
 
 ```bash
-pip install stalcraft-api
+pip install pyscx
 ```
 
 Или, если вы хотите установить библиотеку непосредственно с GitHub:
 
 ```bash
-pip install git+https://github.com/yourusername/stalcraft-api.git
+pip install git+https://github.com/Oidaho/pyscx.git
 ```
 
 ## 🛠️ Быстрый Старт
