@@ -151,8 +151,10 @@ class EmissionsGroup(APIMethodGroup):
             ```
         """
         path = "/emission"
-        token = kwargs.get("token")
-        return self._request(path=path, region=region, model=Emission, token=token)
+        token = kwargs.pop("token")
+        return self._request(
+            path=path, region=region, model=Emission, token=token, query_params=kwargs
+        )
 
 
 class FriendsGroup(APIMethodGroup):
@@ -182,8 +184,8 @@ class FriendsGroup(APIMethodGroup):
             ```
         """
         path = f"/friends/{character_name}"
-        token = kwargs.get("token")
-        return self._request(path=path, region=region, token=token)
+        token = kwargs.pop("token")
+        return self._request(path=path, region=region, token=token, query_params=kwargs)
 
 
 class AuctionGroup(APIMethodGroup):
@@ -215,10 +217,15 @@ class AuctionGroup(APIMethodGroup):
             ```
         """
         path = f"/auction/{item_id}/history"
-        token = kwargs.get("token")
+        token = kwargs.pop("token")
         nested_attr = "prices"
         return self._request(
-            path=path, region=region, model=AuctionRedeemedLot, nested=nested_attr, token=token
+            path=path,
+            region=region,
+            model=AuctionRedeemedLot,
+            nested=nested_attr,
+            token=token,
+            query_params=kwargs,
         )
 
     @APIMethodGroup._pass_token(TokenType.APPLICATION)
@@ -247,10 +254,15 @@ class AuctionGroup(APIMethodGroup):
             ```
         """
         path = f"/auction/{item_id}/lots"
-        token = kwargs.get("token")
+        token = kwargs.pop("token")
         nested_attr = "lots"
         return self._request(
-            path=path, region=region, model=AuctionLot, nested=nested_attr, token=token
+            path=path,
+            region=region,
+            model=AuctionLot,
+            nested=nested_attr,
+            token=token,
+            query_params=kwargs,
         )
 
 
@@ -281,8 +293,10 @@ class CharactersGroup(APIMethodGroup):
             ```
         """
         path = "/characters"
-        token = kwargs.get("token")
-        return self._request(path=path, region=region, model=CharacterInfo, token=token)
+        token = kwargs.pop("token")
+        return self._request(
+            path=path, region=region, model=CharacterInfo, token=token, query_params=kwargs
+        )
 
     @APIMethodGroup._pass_token(TokenType.APPLICATION)
     def get_profile(self, region: str, character_name: str, **kwargs) -> FullCharacterInfo:
@@ -311,8 +325,10 @@ class CharactersGroup(APIMethodGroup):
             ```
         """
         path = f"/character/by-name/{character_name}/profile"
-        token = kwargs.get("token")
-        return self._request(path=path, region=region, model=FullCharacterInfo, token=token)
+        token = kwargs.pop("token")
+        return self._request(
+            path=path, region=region, model=FullCharacterInfo, token=token, query_params=kwargs
+        )
 
 
 class ClansGroup(APIMethodGroup):
@@ -342,8 +358,8 @@ class ClansGroup(APIMethodGroup):
             ```
         """
         path = f"/clan/{clan_id}/info"
-        token = kwargs.get("token")
-        return self._request(path=path, region=region, model=Clan, token=token)
+        token = kwargs.pop("token")
+        return self._request(path=path, region=region, model=Clan, token=token, query_params=kwargs)
 
     @APIMethodGroup._pass_token(TokenType.USER)
     def get_members(self, region: str, clan_id: str, **kwargs) -> list[ClanMember]:
@@ -372,8 +388,10 @@ class ClansGroup(APIMethodGroup):
             ```
         """
         path = f"/clan/{clan_id}/members"
-        token = kwargs.get("token")
-        return self._request(path=path, region=region, model=ClanMember, token=token)
+        token = kwargs.pop("token")
+        return self._request(
+            path=path, region=region, model=ClanMember, token=token, query_params=kwargs
+        )
 
     @APIMethodGroup._pass_token(TokenType.APPLICATION)
     def get_all(self, region: str, **kwargs) -> list[Clan]:
@@ -403,6 +421,13 @@ class ClansGroup(APIMethodGroup):
             ```
         """
         path = "/clans"
-        token = kwargs.get("token")
+        token = kwargs.pop("token")
         nested_attr = "data"
-        return self._request(path=path, region=region, model=Clan, token=token, nested=nested_attr)
+        return self._request(
+            path=path,
+            region=region,
+            model=Clan,
+            token=token,
+            nested=nested_attr,
+            query_params=kwargs,
+        )
