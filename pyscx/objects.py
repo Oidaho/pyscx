@@ -31,7 +31,7 @@ class AuctionLot(APIObject):
     item_id: Annotated[str, Field(alias="itemId")]
     amount: Annotated[int, Field(alias="amount")]
     start_price: Annotated[int, Field(alias="startPrice")]
-    current_price: Annotated[int, Field(alias="currentPrice")]
+    current_price: Annotated[int, Field(alias="currentPrice", default=None)]
     buyout_price: Annotated[int, Field(alias="buyoutPrice")]
     start_time: Annotated[datetime, Field(alias="startTime")]
     end_time: Annotated[datetime, Field(alias="endTime")]
