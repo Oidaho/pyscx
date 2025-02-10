@@ -20,15 +20,26 @@ class APIMethodGroup(object):
         self.tokens = tokens
 
     def _request(
-        self, path: str, region: str = "", token: str | None = None, model: APIObject | None = None
+        self,
+        path: str,
+        region: str = "",
+        model: APIObject | None = None,
+        nested: str | None = None,
+        token: str | None = None,
+        query_params: dict | None = None,
     ) -> list[APIObject] | APIObject:
         request_path = f"{region}/{path.lstrip('/')}"
         response = self.session.request(
             method="GET",
             url=request_path,
             headers={"Authorization": f"Bearer {token}"} if token else {},
+            params=query_params,
         )
         data = response.json()
+
+        # Targeted extraction of a nested structure
+        if isinstance(data, dict) and nested in data:
+            data = data[nested]
 
         # If there is a need to wrap it in a APIObject
         if model:
@@ -61,7 +72,11 @@ class APIMethodGroup(object):
 class RegionsGroup(APIMethodGroup):
     def get_all(self) -> list[Region]:
         path = "/regions"
-        return self._request(path, model=Region)
+
+        return self._request(
+            path=path,
+            model=Region,
+        )
 
 
 class EmissionsGroup(APIMethodGroup):
@@ -69,7 +84,13 @@ class EmissionsGroup(APIMethodGroup):
     def get_info(self, region: str, **kwargs) -> Emission:
         path = "/emission"
         token = kwargs.get("token")
-        return self._request(path, region, token, Emission)
+
+        return self._request(
+            path=path,
+            region=region,
+            model=Emission,
+            token=token,
+        )
 
 
 class FriendsGroup(APIMethodGroup):
@@ -77,7 +98,12 @@ class FriendsGroup(APIMethodGroup):
     def get_all(self, region: str, character_name: str, **kwargs) -> list[str]:
         path = f"/friends/{character_name}"
         token = kwargs.get("token")
-        return self._request(path, region, token)
+
+        return self._request(
+            path=path,
+            region=region,
+            token=token,
+        )
 
 
 class AuctionGroup(APIMethodGroup):
@@ -85,13 +111,29 @@ class AuctionGroup(APIMethodGroup):
     def get_item_history(self, region: str, item_id: str, **kwargs) -> list[AuctionRedeemedLot]:
         path = f"/auction/{item_id}/history"
         token = kwargs.get("token")
-        return self._request(path, region, token, AuctionRedeemedLot)
+        nested_attr = "prices"
+
+        return self._request(
+            path=path,
+            region=region,
+            model=AuctionRedeemedLot,
+            nested=nested_attr,
+            token=token,
+        )
 
     @APIMethodGroup._pass_token(TokenType.APPLICATION)
     def get_item_lots(self, region: str, item_id: str, **kwargs) -> list[AuctionLot]:
         path = f"/auction/{item_id}/lots"
         token = kwargs.get("token")
-        return self._request(path, region, token, AuctionLot)
+        nested_attr = "lots"
+
+        return self._request(
+            path=path,
+            region=region,
+            model=AuctionLot,
+            nested=nested_attr,
+            token=token,
+        )
 
 
 class CharactersGroup(APIMethodGroup):
@@ -99,13 +141,25 @@ class CharactersGroup(APIMethodGroup):
     def get_all(self, region: str, **kwargs) -> list[CharacterInfo]:
         path = "/characters"
         token = kwargs.get("token")
-        return self._request(path, region, token, CharacterInfo)
+
+        return self._request(
+            path=path,
+            region=region,
+            model=CharacterInfo,
+            token=token,
+        )
 
     @APIMethodGroup._pass_token(TokenType.APPLICATION)
     def get_profile(self, region: str, character_name: str, **kwargs) -> FullCharacterInfo:
         path = f"/character/by-name/{character_name}/profile"
         token = kwargs.get("token")
-        return self._request(path, region, token, FullCharacterInfo)
+
+        return self._request(
+            path=path,
+            region=region,
+            model=FullCharacterInfo,
+            token=token,
+        )
 
 
 class ClansGroup(APIMethodGroup):
@@ -113,16 +167,36 @@ class ClansGroup(APIMethodGroup):
     def get_info(self, region: str, clan_id: str, **kwargs) -> Clan:
         path = f"/clan/{clan_id}/info"
         token = kwargs.get("token")
-        return self._request(path, region, token, Clan)
+
+        return self._request(
+            path=path,
+            region=region,
+            model=Clan,
+            token=token,
+        )
 
     @APIMethodGroup._pass_token(TokenType.USER)
     def get_members(self, region: str, clan_id: str, **kwargs) -> list[ClanMember]:
         path = f"/clan/{clan_id}/members"
         token = kwargs.get("token")
-        return self._request(path, region, token, ClanMember)
+
+        return self._request(
+            path=path,
+            region=region,
+            model=ClanMember,
+            token=token,
+        )
 
     @APIMethodGroup._pass_token(TokenType.APPLICATION)
     def get_all(self, region: str, **kwargs) -> list[Clan]:
         path = "/clans"
         token = kwargs.get("token")
-        return self._request(path, region, token, Clan)
+        nested_attr = "data"
+
+        return self._request(
+            path=path,
+            region=region,
+            model=Clan,
+            token=token,
+            nested=nested_attr,
+        )
