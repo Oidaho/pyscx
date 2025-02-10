@@ -33,13 +33,13 @@ Whether you're building tools, analyzing game statistics, or creating custom app
 To install the library, run the following command:
 
 ```bash
-pip install stalcraft-api
+pip install pyscx
 ```
 
 Or, if you want to install the library directly from GitHub:
 
 ```bash
-pip install git+https://github.com/yourusername/stalcraft-api.git
+pip install git+https://github.com/Oidaho/pyscx.git
 ```
 
 ## 🛠️ Quick Start
