@@ -37,6 +37,7 @@ class APIMethodGroup(object):
             headers={"Authorization": f"Bearer {token}"} if token else {},
             params=query_params,
         )
+        response.raise_for_status()
 
         data = self._extract_nested(response.json(), nested)
 
