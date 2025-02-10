@@ -1,4 +1,4 @@
-# pyscx
+# ☢️ PYSCX
 
 ![Technical banner](https://github.com/user-attachments/assets/a82243e5-6f38-46a9-89bd-453bb051b557)
 
