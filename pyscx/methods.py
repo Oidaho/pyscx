@@ -1,6 +1,7 @@
 from functools import wraps
+from typing import Any
+
 from .http import APISession
-from .token import TokenType
 from .objects import (
     APIObject,
     AuctionLot,
@@ -12,6 +13,7 @@ from .objects import (
     FullCharacterInfo,
     Region,
 )
+from .token import TokenType
 
 
 class APIMethodGroup(object):
@@ -35,11 +37,8 @@ class APIMethodGroup(object):
             headers={"Authorization": f"Bearer {token}"} if token else {},
             params=query_params,
         )
-        data = response.json()
 
-        # Targeted extraction of a nested structure
-        if isinstance(data, dict) and nested in data:
-            data = data[nested]
+        data = self._extract_nested(response.json(), nested)
 
         # If there is a need to wrap it in a APIObject
         if model:
@@ -49,6 +48,13 @@ class APIMethodGroup(object):
             return model(**data)
         else:
             return data
+
+    # Targeted extraction of a nested structure
+    @staticmethod
+    def _extract_nested(data: dict[str, Any], nested: str) -> list[dict] | dict:
+        if isinstance(data, dict) and nested in data:
+            return data[nested]
+        return data
 
     @classmethod
     def _pass_token(cls, token_type: TokenType) -> callable:
