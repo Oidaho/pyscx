@@ -8,7 +8,8 @@
 ![GitHub watchers](https://img.shields.io/github/watchers/oidaho/pyscx)
 ![GitHub Repo stars](https://img.shields.io/github/stars/Oidaho/pyscx)
 
-This library is designed to simplify your interaction with the **STALCRAFT: X API**, providing a robust and developer-friendly interface for accessing game data. 🎮
+This library is designed to simplify your interaction with the **STALCRAFT: X API**, providing a robust and developer-friendly interface for accessing game data.
+
 Whether you're building tools, analyzing game statistics, or creating custom applications, this library offers an intuitive way to retrieve and work with **STALCRAFT: X** data.
 
 > [!NOTE]
