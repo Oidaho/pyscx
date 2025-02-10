@@ -2,19 +2,20 @@ from enum import Enum
 
 
 class TokenType(Enum):
-    """Access token type enum."""
+    """A list of supported token types."""
 
     USER = "user"
     APPLICATION = "application"
 
 
 class Token(object):
-    """The general class of the API access token.
-    The interface for transferring a token to an API object.
+    """The base class for API access tokens.
+
+    Provides an interface for passing a token to an API object.
 
     Initial Args:
-        value (str): Access token.
-        type (TokenType): Access token type.
+        value (str): The access token.
+        type (TokenType): The type of the access token.
     """
 
     def __init__(self, value: str, type: TokenType) -> None:
