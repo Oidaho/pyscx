@@ -39,23 +39,25 @@ class APIMethodGroup(object):
         )
         response.raise_for_status()
 
-        data = self._extract_nested(response.json(), nested)
+        data = self.__extract_nested(response.json(), nested)
+        return self.__wrap_data(data, model)
 
-        # If there is a need to wrap it in a APIObject
+    # Targeted extraction of a nested structure
+    @staticmethod
+    def __extract_nested(data: dict[str, Any], nested: str) -> list[dict] | dict:
+        if isinstance(data, dict) and nested in data:
+            return data[nested]
+        return data
+
+    # If there is a need to wrap it in an APIObject
+    @staticmethod
+    def __wrap_data(data: dict[str, Any], model: APIObject) -> APIObject:
         if model:
-            # If data is a list, turn it into a list of APIObject.
             if isinstance(data, list):
                 return [model(**item) for item in data]
             return model(**data)
         else:
             return data
-
-    # Targeted extraction of a nested structure
-    @staticmethod
-    def _extract_nested(data: dict[str, Any], nested: str) -> list[dict] | dict:
-        if isinstance(data, dict) and nested in data:
-            return data[nested]
-        return data
 
     @classmethod
     def _pass_token(cls, token_type: TokenType) -> callable:
