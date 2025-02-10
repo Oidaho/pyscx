@@ -23,8 +23,10 @@ class Server(Enum):
 
 
 class BaseAPI(object):
-    """Base API class for STALCRAFT:X.
-    Includes API configuration methods.
+    """Base API Class for STALCRAFT: X.
+
+    This class serves as the foundation for interacting with the STALCRAFT: X API.
+    It provides essential methods and utilities required for configuring and initializing API object.
     """
 
     def __init__(self, server: Server | str = "dapi") -> None:
@@ -53,12 +55,32 @@ class BaseAPI(object):
         """Returns the URL of the current STALCRAFT: X API server.
 
         Returns:
-            str: API server URL
+            str: The API server URL.
         """
         return f"https://{self.server}.stalcraft.net/"
 
 
 class API(BaseAPI):
+    """API Object Class.
+
+    This class enables sending requests to the STALCRAFT: X API server.
+    To provide a more organized and user-friendly interface, the request
+    methods are grouped into categories based on their functionality:
+
+    - Regions: Methods related to retrieving information about game regions.
+    - Emissions: Methods for accessing data about emissions within the game.
+    - Friends: Methods to manage and retrieve information about friend lists.
+    - Auction: Methods for interacting with the in-game auction system, including
+                retrieving and purchasing lots.
+    - Characters: Methods to obtain detailed information about game characters,
+                including statistics and achievements.
+    - Clans: Methods for working with clan-related data, such as member lists,
+                ranks, and other clan-specific information.
+
+    This structure allows for easier navigation and usage of the API, ensuring that
+    developers can quickly find and utilize the methods they need for their specific use cases.
+    """
+
     __api_tokens: dict[TokenType, str] = {}
 
     regions: RegionsGroup
@@ -82,16 +104,13 @@ class API(BaseAPI):
             except KeyError:
                 raise ValueError("Passed token with unxecepted type.")
 
-        # Initializing the API methods
         self.__init_methods__()
 
     def __getattr__(self, name):
         try:
-            # Default __getattr__
             return super().__getattr__(name)
 
         except AttributeError as e:
-            # Getting token as a class attribute
             postfix = "_token"
             if name.endswith(postfix):
                 token_type = name.rstrip(postfix)
