@@ -14,6 +14,8 @@ Whether you're building tools, analyzing game statistics, or creating custom app
 
 > [!NOTE]
 > STALCRAFT: X API - v1.0.0
+>
+> Python 3.13+
 
 ---
 

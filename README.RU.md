@@ -16,6 +16,8 @@
 
 > [!NOTE]
 > STALCRAFT: X API - v1.0.0
+>
+> Python 3.13+
 
 ---
 
