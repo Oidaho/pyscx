@@ -57,7 +57,7 @@ class Clan(APIObject):
     alliance: Annotated[str, Field(alias="alliance")]
     description: Annotated[str, Field(alias="description")]
     leader: Annotated[str, Field(alias="leader")]
-    member_count: Annotated[str, Field(alias="memberCount")]
+    member_count: Annotated[int, Field(alias="memberCount")]
 
 
 class ClanMemberRank(Enum):
