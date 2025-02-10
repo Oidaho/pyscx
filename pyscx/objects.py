@@ -35,14 +35,14 @@ class AuctionLot(APIObject):
     buyout_price: Annotated[int, Field(alias="buyoutPrice")]
     start_time: Annotated[datetime, Field(alias="startTime")]
     end_time: Annotated[datetime, Field(alias="endTime")]
-    additional: Annotated[dict[str, Any], Field(alias="dict")]
+    additional: Annotated[dict[str, Any], Field(alias="additional")]
 
 
 class AuctionRedeemedLot(APIObject):
     amount: Annotated[int, Field(alias="amount")]
     price: Annotated[int, Field(alias="price")]
     time: Annotated[datetime, Field(alias="time")]
-    additional: Annotated[dict[str, Any], Field(alias="dict")]
+    additional: Annotated[dict[str, Any], Field(alias="additional")]
 
 
 # ! CLAN SCHEMAS
