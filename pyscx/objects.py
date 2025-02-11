@@ -169,7 +169,7 @@ class CharacterStat(APIObject):
 
     id: Annotated[str, Field(alias="id")]
     type: Annotated[CharacterStatType, Field(alias="type")]
-    value: Annotated[dict[str, Any], Field(alias="dict")]
+    value: Annotated[dict[str, Any], Field(alias="value")]
 
 
 class CharacterMeta(APIObject):
