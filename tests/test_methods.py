@@ -42,11 +42,18 @@ def test_api_method(group, method, kwargs):
     getattr(api_group, method)(**kwargs)
 
 
-def test_token_redefinition():
+def test_token_incorrect_redefinition():
     """Ensure using an application token for user-specific methods raises PermissionError."""
-    with pytest.raises(PermissionError, match=".*only available.*") as exc_info:
+    with pytest.raises(PermissionError, match=".*token is not valid*") as exc_info:
         api.friends.get_all(
             region="EU", character_name="Test-1", token=os.getenv("DEMO_APP_ACCESS_TOKEN")
         )
 
     assert exc_info.type is PermissionError
+
+
+def test_token_correct_redefinition():
+    """Ensure using an new user token for user-specific methods does not raises PermissionError."""
+    api.friends.get_all(
+        region="EU", character_name="Test-1", token=os.getenv("DEMO_USER_ACCESS_TOKEN")
+    )
