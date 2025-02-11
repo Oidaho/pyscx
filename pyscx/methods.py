@@ -2,6 +2,8 @@ from functools import wraps
 from typing import Any
 
 from .http import APISession
+from requests import HTTPError
+
 from .objects import (
     APIObject,
     AuctionLot,
@@ -85,13 +87,23 @@ class APIMethodGroup(object):
         def decorator(func):
             @wraps(func)
             def wrapper(self, *args, **kwargs):
-                token = self.tokens.get(token_type)
-                if token is None:
-                    raise PermissionError(
-                        f"This method is only available with a token of the type '{token_type}'. "
-                        "This type of token was not passed to the API."
-                    )
-                result = func(self, *args, token=token, **kwargs)
+                token = (
+                    self.tokens.get(token_type)
+                    if kwargs.get("token") is None
+                    else kwargs.pop("token")
+                )
+
+                try:
+                    result = func(self, *args, token=token, **kwargs)
+                except HTTPError as e:
+                    if e.response.status_code == 401:
+                        raise PermissionError(
+                            f"This method is only available with a token of the type '{token_type}'. "
+                            "This type of token was not passed to the API."
+                        )
+                    else:
+                        raise e
+
                 return result
 
             return wrapper
