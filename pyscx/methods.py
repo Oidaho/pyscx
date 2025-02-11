@@ -98,8 +98,9 @@ class APIMethodGroup(object):
                 except HTTPError as e:
                     if e.response.status_code == 401:
                         raise PermissionError(
-                            f"This method is only available with a token of the type '{token_type}'. "
-                            "This type of token was not passed to the API."
+                            "The token is not valid. "
+                            f"Either you provided a token of a type other than '{token_type}',"
+                            "or a token of this type is missing in the API object."
                         )
                     else:
                         raise e
