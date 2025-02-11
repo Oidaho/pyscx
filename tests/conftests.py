@@ -7,7 +7,7 @@ TestData = dict[str, Any] | list[dict[str, Any]] | list[Any]
 
 
 @pytest.fixture
-def region_list() -> TestData:
+def valid_region_list() -> TestData:
     return [
         {"id": "RU", "name": "RUSSIA"},
         {"id": "EU", "name": "EUROPE"},
@@ -17,7 +17,7 @@ def region_list() -> TestData:
 
 
 @pytest.fixture
-def emission_information_data() -> TestData:
+def valid_emission_information_data() -> TestData:
     return {
         "currentStart": "2019-08-24T14:15:22Z",
         "previousStart": "2019-08-24T14:15:22Z",
@@ -26,12 +26,12 @@ def emission_information_data() -> TestData:
 
 
 @pytest.fixture
-def freind_list() -> TestData:
+def valid_freind_list() -> TestData:
     return ["Test-2", "Test-3"]
 
 
 @pytest.fixture
-def price_history_data() -> TestData:
+def valid_price_history_data() -> TestData:
     return [
         {"amount": 1, "price": 1000, "time": "2025-02-11T02:48:47.001594Z", "additional": {}},
         {"amount": 2, "price": 2000, "time": "2025-02-11T02:33:47.001597Z", "additional": {}},
@@ -47,7 +47,7 @@ def price_history_data() -> TestData:
 
 
 @pytest.fixture
-def active_lots_data() -> TestData:
+def valid_active_lots_data() -> TestData:
     return [
         {
             "itemId": "1kv2",
@@ -142,9 +142,9 @@ def active_lots_data() -> TestData:
     ]
 
 
-# Data cannot be retrieved from the Demo API. Improvisation, see issue #11
+# ! Data cannot be retrieved from the Demo API. Improvisation, see issue #11
 @pytest.fixture
-def character_profile_data() -> TestData:
+def valid_character_profile_data() -> TestData:
     return {
         "username": "Test-1",
         "uuid": "5c7e0994-bc22-4190-9774-5f197b1500e6",
@@ -172,7 +172,7 @@ def character_profile_data() -> TestData:
 
 
 @pytest.fixture
-def user_characters_list() -> TestData:
+def valid_user_characters_list() -> TestData:
     return [
         {
             "information": {
@@ -244,7 +244,7 @@ def user_characters_list() -> TestData:
 
 
 @pytest.fixture
-def clan_list() -> TestData:
+def valid_clan_list() -> TestData:
     return [
         {
             "id": "647d6c53-b3d7-4d30-8d08-de874eb1d845",
@@ -274,7 +274,7 @@ def clan_list() -> TestData:
 
 
 @pytest.fixture
-def clan_information_data() -> TestData:
+def valid_clan_information_data() -> TestData:
     return {
         "id": "647d6c53-b3d7-4d30-8d08-de874eb1d845",
         "name": "Clan #1",
@@ -290,7 +290,7 @@ def clan_information_data() -> TestData:
 
 
 @pytest.fixture
-def clan_members_list() -> TestData:
+def valid_clan_members_list() -> TestData:
     return [
         {"name": "Test-2", "rank": "LEADER", "joinTime": "2022-12-13T10:15:30Z"},
         {"name": "Test-3", "rank": "OFFICER", "joinTime": "2023-01-03T10:15:30Z"},
