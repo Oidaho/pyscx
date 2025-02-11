@@ -14,7 +14,7 @@ class APIObject(BaseModel):
 
     def raw(self) -> dict[str, Any]:
         """Raw representation of the object as it was obtained from the STALCRAFT: X API."""
-        return self.model_dump(by_alias=True, mode="json")
+        return self.model_dump(by_alias=True, mode="json", exclude_none=True)
 
 
 # ! REGION SCHEMAS
