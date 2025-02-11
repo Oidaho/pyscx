@@ -232,4 +232,4 @@ class FullCharacterInfo(APIObject):
     displayed_achievements: Annotated[list[str], Field(alias="displayedAchievements")]
 
     clan: Annotated[CharacterClan, Field(alias="clan")]
-    stat: Annotated[list[CharacterStat], Field(alias="stat")]
+    stats: Annotated[list[CharacterStat], Field(alias="stats")]
