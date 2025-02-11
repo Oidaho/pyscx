@@ -8,14 +8,21 @@ TestData = dict[str, Any]
 
 @pytest.fixture
 def valid_region_data() -> TestData:
-    """Демонстрационные данные с демо-сервера STALCRAFT:X API.
-    Получены, путем отправки GET запроса к ресурсу `/regions`
+    """Sample data from the STALCRAFT:X API demo server.
+
+    Retrieved by sending a GET request to the
+    `/regions` endpoint.
     """
     return {"id": "RU", "name": "RUSSIA"}
 
 
 @pytest.fixture
 def valid_emission_data() -> TestData:
+    """Sample data from the STALCRAFT:X API demo server.
+
+    Retrieved by sending a GET request to the
+    `/emission` endpoint.
+    """
     return {
         "currentStart": "2019-08-24T14:15:22Z",
         "previousStart": "2019-08-24T14:15:22Z",
@@ -25,6 +32,11 @@ def valid_emission_data() -> TestData:
 
 @pytest.fixture
 def valid_redeemed_lot_data() -> TestData:
+    """Sample data from the STALCRAFT:X API demo server.
+
+    Retrieved by sending a GET request to the
+    `/{region}/auction/{item}/history` endpoint.
+    """
     return {
         "amount": 1,
         "price": 1000,
@@ -35,6 +47,11 @@ def valid_redeemed_lot_data() -> TestData:
 
 @pytest.fixture
 def valid_active_lot_data() -> TestData:
+    """Sample data from the STALCRAFT:X API demo server.
+
+    Retrieved by sending a GET request to the
+    `/{region}/auction/{item}/lots` endpoint.
+    """
     return {
         "itemId": "1kv2",
         "amount": 1,
@@ -49,6 +66,11 @@ def valid_active_lot_data() -> TestData:
 # ! Data cannot be retrieved from the Demo API. Improvisation, see issue #11
 @pytest.fixture
 def valid_character_profile_data() -> TestData:
+    """Sample data from the STALCRAFT:X API demo server.
+
+    Retrieved by sending a GET request to the
+    `/{region}/character/by-name/{character}/profile` endpoint.
+    """
     return {
         "username": "Test-1",
         "uuid": "5c7e0994-bc22-4190-9774-5f197b1500e6",
@@ -77,6 +99,11 @@ def valid_character_profile_data() -> TestData:
 
 @pytest.fixture
 def valid_user_character_data() -> TestData:
+    """Sample data from the STALCRAFT:X API demo server.
+
+    Retrieved by sending a GET request to the
+    `/{region}/characters` endpoint.
+    """
     return {
         "information": {
             "id": "5c7e0994-bc22-4190-9774-5f197b1500e6",
@@ -103,6 +130,11 @@ def valid_user_character_data() -> TestData:
 
 @pytest.fixture
 def valid_clan_data() -> TestData:
+    """Sample data from the STALCRAFT:X API demo server.
+
+    Retrieved by sending a GET request to the
+    `/{region}/clan/{clan-id}/info` endpoint.
+    """
     return {
         "id": "647d6c53-b3d7-4d30-8d08-de874eb1d845",
         "name": "Clan #1",
@@ -119,6 +151,11 @@ def valid_clan_data() -> TestData:
 
 @pytest.fixture
 def valid_clan_member_data() -> TestData:
+    """Sample data from the STALCRAFT:X API demo server.
+
+    Retrieved by sending a GET request to the
+    `/{region}/clan/{clan-id}/members` endpoint.
+    """
     return {
         "name": "Test-3",
         "rank": "OFFICER",
