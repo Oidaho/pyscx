@@ -142,9 +142,33 @@ def active_lots_data() -> TestData:
     ]
 
 
+# Data cannot be retrieved from the Demo API. Improvisation, see issue #11
 @pytest.fixture
 def character_profile_data() -> TestData:
-    return {}
+    return {
+        "username": "Test-1",
+        "uuid": "5c7e0994-bc22-4190-9774-5f197b1500e6",
+        "status": "offline",
+        "alliance": "duty",
+        "lastLogin": "2019-08-24T14:15:22Z",
+        "displayedAchievements": ["playtime"],
+        "clan": {
+            "info": {
+                "id": "string",
+                "name": "string",
+                "tag": "string",
+                "level": 0,
+                "levelPoints": 0,
+                "registrationTime": "2019-08-24T14:15:22Z",
+                "alliance": "string",
+                "description": "string",
+                "leader": "string",
+                "memberCount": 0,
+            },
+            "member": {"name": "Test-1", "rank": "RECRUIT", "joinTime": "2019-08-24T14:15:22Z"},
+        },
+        "stats": [{"id": "string", "type": "INTEGER", "value": {}}],
+    }
 
 
 @pytest.fixture
