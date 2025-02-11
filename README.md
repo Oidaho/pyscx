@@ -54,7 +54,6 @@ from dotenv import load_dotenv
 
 from pyscx import Server, API
 from pyscx.token import Token, TokenType
-from pprint import pprint
 
 
 load_dotenv()
@@ -71,7 +70,7 @@ user_token = Token(
 
 api = API(server=Server.DEMO, tokens=[user_token, app_token])
 
-pprint(api.regions.get_all(region="RU"))
+print(api.regions.get_all(region="RU"))
 ```
 
 ## 📚 Documentation
