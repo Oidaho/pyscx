@@ -7,7 +7,16 @@ from .exceptions import MissingTokenError
 
 
 class API:
-    """API Object Class."""
+    """API Object Class for interacting with the STALCRAFT: X API.
+
+    This class provides an interface to communicate with the STALCRAFT: X API. It allows you to manage
+    tokens and send HTTP requests to various API endpoints using the appropriate method groups.
+
+    Attributes:
+        http (APISession): An instance of the APISession class used for sending HTTP requests.
+        _tokens (dict[TokenType, str]): A dictionary containing the tokens required for authentication
+            with the API.
+    """
 
     __slots__ = ("http", "_tokens")
 
@@ -24,6 +33,17 @@ class API:
         return stored
 
     def get_token(self, type: TokenType) -> str:
+        """Retrieves a token of the specified type from the stored tokens.
+
+        Args:
+            type (TokenType): The type of the token to retrieve.
+
+        Returns:
+            str: The token value corresponding to the specified type.
+
+        Raises:
+            MissingTokenError: If no token of the specified type is found.
+        """
         try:
             return self.__api_tokens[type]
         except KeyError:

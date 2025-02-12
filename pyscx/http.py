@@ -6,7 +6,12 @@ DEFAULT_AGENT = "pyscx/1.0.0 (+https://github.com/Oidaho/pyscx)"
 
 
 class Server(Enum):
-    """List of available STALCRAFT: X API servers"""
+    """Enumeration representing the available STALCRAFT: X API servers.
+
+    Attributes:
+        DEMO (str): The demo environment server.
+        PRODUCTION (str): The production environment server.
+    """
 
     DEMO = "dapi"
     PRODUCTION = "eapi"
@@ -15,8 +20,8 @@ class Server(Enum):
 class APISession(requests.Session):
     """Custom wrapper around the Session class from the `requests` module.
 
-    Allows storing the base URL of the server and sending requests by
-    specifying only the resource path.
+    Attributes:
+        server (Server): The server environment to be used for API requests.
     """
 
     def __init__(self, server: Server):
@@ -33,9 +38,9 @@ class APISession(requests.Session):
 
     @property
     def server_url(self) -> str:
-        """Returns the URL of the current STALCRAFT: X API server.
+        """Returns the base URL of the current STALCRAFT: X API server.
 
         Returns:
-            str: The API server URL.
+            str: The full URL of the current API server.
         """
         return f"https://{self.server.value}.stalcraft.net"

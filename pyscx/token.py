@@ -2,7 +2,12 @@ from enum import Enum
 
 
 class TokenType(Enum):
-    """A list of supported token types."""
+    """A list of supported token types for authentication.
+
+    Attributes:
+        USER (str): The type for user tokens.
+        APPLICATION (str): The type for application tokens.
+    """
 
     USER = "user"
     APPLICATION = "application"
@@ -11,10 +16,15 @@ class TokenType(Enum):
 class Token(object):
     """The base class for API access tokens.
 
-    Provides an interface for passing a token to an API object.
+    This class provides an interface for passing a token to the API object. Each token consists of
+    a value (the actual token string) and its type (which specifies the token's purpose).
+
+    Attributes:
+        value (str): The access token string.
+        type (TokenType): The type of the access token.
 
     Initial Args:
-        value (str): The access token.
+        value (str): The access token string.
         type (TokenType): The type of the access token.
     """
 
