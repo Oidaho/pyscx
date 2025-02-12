@@ -81,8 +81,6 @@ class API(BaseAPI):
     developers can quickly find and utilize the methods they need for their specific use cases.
     """
 
-    __api_tokens: dict[TokenType, str] = {}
-
     regions: RegionsGroup
     emissions: EmissionsGroup
     friends: FriendsGroup
@@ -92,38 +90,21 @@ class API(BaseAPI):
 
     def __init__(self, tokens: Token | Collection[Token], server: Server | str = "dapi") -> None:
         super().__init__(server=server)
-
-        # * Guarantee of the existence of the token
-        for type in TokenType:
-            self.__api_tokens[type] = None
-
-        tokens = [tokens] if isinstance(tokens, Token) else tokens
-        for token in tokens:
-            try:
-                self.__api_tokens[token.type] = token.value
-            except KeyError:
-                raise ValueError("Passed token with unxecepted type.")
-
+        self.__store_tokens(tokens)
         self.__init_methods__()
 
-    def __getattr__(self, name):
+    def __store_tokens(self, tokens) -> None:
+        stored = {}
+        tokens = [tokens] if isinstance(tokens, Token) else tokens
+        for token in tokens:
+            stored[token.type] = token.value
+        self.__api_tokens = stored
+
+    def get_token(self, type: TokenType) -> str:
         try:
-            return super().__getattr__(name)
-
-        except AttributeError as e:
-            postfix = "_token"
-            if name.endswith(postfix):
-                token_type = name.rstrip(postfix)
-                token = self.__api_tokens.get(TokenType(token_type))
-
-                if token is None:
-                    raise AttributeError(
-                        f"{self.__class__.__name__} object has no attribute '{name}'"
-                    )
-
-                return token
-
-            raise AttributeError(e)
+            return self.__api_tokens[type]
+        except KeyError:
+            raise  # MissingTokenError
 
     def __init_methods__(self) -> None:
         method_groups: dict[str, Type[APIMethodGroup]] = {
