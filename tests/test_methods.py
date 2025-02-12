@@ -79,6 +79,7 @@ def test_token_correct_redefinition():
     ids=["App_Instead_User", "User_Instead_App"],
 )
 def test_token_with_invalid_type(env_var, token_type):
+    """Test the behavior of the API when provided with a token of an invalid type."""
     user_token = get_token(env_var, token_type)
 
     api = API(server=Server.DEMO, tokens=user_token)
