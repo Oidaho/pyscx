@@ -1,66 +1,19 @@
-from enum import Enum
-
-from .http import APISession
-from .token import Token, TokenType
 from typing import Collection, Type
 
+from .http import APISession, Server
 from .methods import (
     APIMethodGroup,
-    RegionsGroup,
-    EmissionsGroup,
-    FriendsGroup,
     AuctionGroup,
     CharactersGroup,
     ClansGroup,
+    EmissionsGroup,
+    FriendsGroup,
+    RegionsGroup,
 )
+from .token import Token, TokenType
 
 
-class Server(Enum):
-    """List of available STALCRAFT: X API servers"""
-
-    DEMO = "dapi"
-    PRODUCTION = "eapi"
-
-
-class BaseAPI(object):
-    """Base API Class for STALCRAFT: X.
-
-    This class serves as the foundation for interacting with the STALCRAFT: X API.
-    It provides essential methods and utilities required for configuring and initializing API object.
-    """
-
-    def __init__(self, server: Server | str = "dapi") -> None:
-        if isinstance(server, Server):
-            self.server = server.value
-        elif server in Server:
-            self.server = server
-        else:
-            raise ValueError(f"Invalid server value: '{server}'.")
-
-        self.session = self.__make_session()
-
-    def __make_session(self) -> APISession:
-        session = APISession(self.server_url)
-        session.headers.update(
-            {
-                "Content-Type": "application/json",
-                "User-Agent": "pyscx/1.0.0 (+https://github.com/Oidaho/pyscx)",
-                "Accept": "application/json",
-            }
-        )
-        return session
-
-    @property
-    def server_url(self) -> str:
-        """Returns the URL of the current STALCRAFT: X API server.
-
-        Returns:
-            str: The API server URL.
-        """
-        return f"https://{self.server}.stalcraft.net/"
-
-
-class API(BaseAPI):
+class API:
     """API Object Class.
 
     This class enables sending requests to the STALCRAFT: X API server.
@@ -81,15 +34,9 @@ class API(BaseAPI):
     developers can quickly find and utilize the methods they need for their specific use cases.
     """
 
-    regions: RegionsGroup
-    emissions: EmissionsGroup
-    friends: FriendsGroup
-    auction: AuctionGroup
-    characters: CharactersGroup
-    clans: ClansGroup
+    def __init__(self, tokens: Token | Collection[Token], server: Server) -> None:
+        self.http = APISession(server)
 
-    def __init__(self, tokens: Token | Collection[Token], server: Server | str = "dapi") -> None:
-        super().__init__(server=server)
         self.__store_tokens(tokens)
         self.__init_methods__()
 
@@ -117,4 +64,4 @@ class API(BaseAPI):
         }
 
         for name, group_class in method_groups.items():
-            setattr(self, name, group_class(session=self.session, tokens=self.__api_tokens))
+            setattr(self, name, group_class(session=self.http, tokens=self.__api_tokens))

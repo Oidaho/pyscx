@@ -1,4 +1,15 @@
+from enum import Enum
+
 import requests
+
+DEFAULT_AGENT = "pyscx/1.0.0 (+https://github.com/Oidaho/pyscx)"
+
+
+class Server(Enum):
+    """List of available STALCRAFT: X API servers"""
+
+    DEMO = "dapi"
+    PRODUCTION = "eapi"
 
 
 class APISession(requests.Session):
@@ -8,10 +19,21 @@ class APISession(requests.Session):
     specifying only the resource path.
     """
 
-    def __init__(self, server_url: str):
+    def __init__(self, server: Server):
         super().__init__()
-        self.base_url = server_url.rstrip("/")
+        self.server = server
 
-    def request(self, method, url, *args, **kwargs):
-        full_url = f"{self.base_url}/{url.lstrip('/')}"
-        return super().request(method, full_url, *args, **kwargs)
+        self.headers["User-Agent"] = DEFAULT_AGENT
+
+    def get(self, url, **kwargs) -> requests.Response:
+        full_url = f"{self.server_url}/{url.lstrip('/')}"
+        return super().get(full_url, **kwargs)
+
+    @property
+    def server_url(self) -> str:
+        """Returns the URL of the current STALCRAFT: X API server.
+
+        Returns:
+            str: The API server URL.
+        """
+        return f"https://{self.server.value}.stalcraft.net/"
