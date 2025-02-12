@@ -18,6 +18,8 @@ class Token(object):
         type (TokenType): The type of the access token.
     """
 
+    __slots__ = ("value", "type")
+
     def __init__(self, value: str, type: TokenType) -> None:
         self.value = value
         self.type = type
