@@ -27,7 +27,9 @@ class APISession(requests.Session):
 
     def get(self, url, **kwargs) -> requests.Response:
         full_url = f"{self.server_url}/{url.lstrip('/')}"
-        return super().get(full_url, **kwargs)
+        response = super().get(full_url, **kwargs)
+        response.raise_for_status()
+        return response
 
     @property
     def server_url(self) -> str:
@@ -36,4 +38,4 @@ class APISession(requests.Session):
         Returns:
             str: The API server URL.
         """
-        return f"https://{self.server.value}.stalcraft.net/"
+        return f"https://{self.server.value}.stalcraft.net"
