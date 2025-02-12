@@ -70,7 +70,7 @@ user_token = Token(
 
 api = API(server=Server.DEMO, tokens=[user_token, app_token])
 
-print(api.regions.get_all(region="RU"))
+print(api.clans(region="EU").get_all())
 ```
 
 ## 📚 Documentation
