@@ -19,8 +19,8 @@ keywords = [ "api", "library", "eapi", "stalcraft", "package" ]
 [project.urls]
 repository = "https://github.com/Oidaho/pyscx"
 "Bug Tracker" = "https://github.com/Oidaho/pyscx/issues"
-#documentation = "..."
-#homepage = "..."
+documentation = "https://Oidaho.github.io/pyscx/"
+
 
 [tool.poetry]
 readme = ["README.md", "README.RU.md"]
