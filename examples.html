@@ -45,7 +45,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">Package Reference</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#token-redefinition">Token redefinition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#different-number-of-tokens">Different number of tokens</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Oidaho/pyscx/issues">Bug Tracker</a></li>
 </ul>
 
@@ -75,6 +79,78 @@
              
   <section id="usage-examples">
 <span id="examples"></span><h1>Usage Examples<a class="headerlink" href="#usage-examples" title="Link to this heading"></a></h1>
+<p>To better understand what <code class="docutils literal notranslate"><span class="pre">pyscx</span></code> is, we will provide simple examples that reflect
+the core essence and some practical features of using the library.</p>
+<p>In addition to this documentation, code examples can be found here: <a class="reference external" href="https://github.com/Oidaho/pyscx/tree/main/examples">GitHub Examples</a></p>
+<section id="token-redefinition">
+<h2>Token redefinition<a class="headerlink" href="#token-redefinition" title="Link to this heading"></a></h2>
+<p>If there is a need to send a request with a token different from the one provided during
+the initialization of the <code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code> class, you can do so by passing the token
+through <strong>**kwargs</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyscx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Server</span><span class="p">,</span> <span class="n">API</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyscx.token</span><span class="w"> </span><span class="kn">import</span> <span class="n">Token</span><span class="p">,</span> <span class="n">TokenType</span>
+
+
+<span class="n">load_dotenv</span><span class="p">()</span>
+
+<span class="n">user_token</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span>
+    <span class="n">value</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DEMO_USER_ACCESS_TOKEN&quot;</span><span class="p">),</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">TokenType</span><span class="o">.</span><span class="n">USER</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">API</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">Server</span><span class="o">.</span><span class="n">DEMO</span><span class="p">,</span> <span class="n">tokens</span><span class="o">=</span><span class="n">user_token</span><span class="p">)</span>
+
+<span class="n">clan_list</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">friends</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="s2">&quot;EU&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">&quot;other_user_token&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Be mindful of which token you pass to the method.
+Each method requires an access token of its specific type.</p>
+</div>
+</section>
+<section id="different-number-of-tokens">
+<h2>Different number of tokens<a class="headerlink" href="#different-number-of-tokens" title="Link to this heading"></a></h2>
+<p>You can pass only one token or two tokens to the <code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code> class.
+Alternatively, you can choose not to pass any tokens at all. In this case,
+methods that require a token type will raise an exception. However, as we’ve seen earlier,
+a token can also be sent directly through the request.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyscx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Server</span><span class="p">,</span> <span class="n">API</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyscx.token</span><span class="w"> </span><span class="kn">import</span> <span class="n">Token</span><span class="p">,</span> <span class="n">TokenType</span>
+
+
+<span class="n">load_dotenv</span><span class="p">()</span>
+
+<span class="n">app_token</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span>
+    <span class="n">value</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DEMO_APP_ACCESS_TOKEN&quot;</span><span class="p">),</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">TokenType</span><span class="o">.</span><span class="n">APPLICATION</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">user_token</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span>
+    <span class="n">value</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DEMO_USER_ACCESS_TOKEN&quot;</span><span class="p">),</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">TokenType</span><span class="o">.</span><span class="n">USER</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">user_api</span> <span class="o">=</span> <span class="n">API</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">Server</span><span class="o">.</span><span class="n">DEMO</span><span class="p">,</span> <span class="n">tokens</span><span class="o">=</span><span class="n">user_token</span><span class="p">)</span>
+<span class="n">app_api</span> <span class="o">=</span> <span class="n">API</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">Server</span><span class="o">.</span><span class="n">DEMO</span><span class="p">,</span> <span class="n">tokens</span><span class="o">=</span><span class="n">app_token</span><span class="p">)</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">API</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">Server</span><span class="o">.</span><span class="n">DEMO</span><span class="p">,</span> <span class="n">tokens</span><span class="o">=</span><span class="p">[</span><span class="n">user_token</span><span class="p">,</span> <span class="n">app_token</span><span class="p">])</span>
+
+
+<span class="n">clan_list1</span> <span class="o">=</span> <span class="n">user_api</span><span class="o">.</span><span class="n">friends</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="s2">&quot;EU&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_all</span><span class="p">()</span>
+<span class="n">clan_list2</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">friends</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="s2">&quot;EU&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_all</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">clan_list1</span> <span class="o">==</span> <span class="n">clan_list2</span><span class="p">)</span> <span class="c1"># True</span>
+</pre></div>
+</div>
+</section>
 </section>
 
 
