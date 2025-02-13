@@ -221,6 +221,11 @@ Regions
     :show-inheritance:
     :no-index:
 
+
+Method :meth:`get_all`:
+  - No region specification is required.
+  - No token is required.
+
 Emissions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -228,6 +233,10 @@ Emissions
     :members:
     :show-inheritance:
     :no-index:
+
+Method :meth:`get_info`:
+  - A region must be specified.
+  - A token of type ``TokenType.APPLICATION`` is required.
 
 Friends
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -237,6 +246,12 @@ Friends
     :show-inheritance:
     :no-index:
 
+Method :meth:`get_all`:
+  - A region must be specified.
+  - A token of type ``TokenType.USER`` is required.
+  - kwargs:
+      - **tokken** (TokenType) - Access token.
+
 Auction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -244,6 +259,26 @@ Auction
     :members:
     :show-inheritance:
     :no-index:
+
+Method :meth:`get_item_history`:
+  - A region must be specified.
+  - A token of type ``TokenType.APPLICATION`` is required.
+  - kwargs:
+      - **tokken** (TokenType) - Access token.
+      - **additional** (bool) - Whether to include additional information about lots: ``True`` or ``False``. By default ``False``.
+      - **limit** (int) - Amount of prices to return, starting from offset, min ``0``, max ``200``, default ``20``.
+      - **offset** (int) - Amount of prices in list to skip.
+
+Method :meth:`get_item_lots`:
+  - A region must be specified.
+  - A token of type ``TokenType.APPLICATION`` is required.
+  - kwargs:
+      - **tokken** (TokenType) - Access token.
+      - **additional** (bool) - Whether to include additional information about lots: ``True`` or ``False``. By default ``False``.
+      - **limit** (int) - Amount of lots to return, starting from offset, min ``0``, max ``200``, default ``20``.
+      - **offset** (int) - Amount of lots in list to skip.
+      - **order** (str) - Either ``asc`` or ``desc``.
+      - **sort** (str) - Property to sort by, one of: ``time_created``, ``time_left``, ``current_price``, ``buyout_price``.
 
 Clans
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -253,6 +288,26 @@ Clans
     :show-inheritance:
     :no-index:
 
+Method :meth:`get_info`:
+  - A region must be specified.
+  - A token of type ``TokenType.APPLICATION`` is required.
+  - kwargs:
+      - **tokken** (TokenType) - Access token.
+
+Method :meth:`get_members`:
+  - A region must be specified.
+  - A token of type ``TokenType.USER`` is required.
+  - kwargs:
+      - **tokken** (TokenType) - Access token.
+
+Method :meth:`get_all`:
+  - A region must be specified.
+  - A token of type ``TokenType.APPLICATION`` is required.
+  - kwargs:
+      - **tokken** (TokenType) - Access token.
+      - **limit** (int) - Amount of lots to return, starting from offset, min ``0``, max ``200``, default ``20``.
+      - **offset** (int) - Amount of lots in list to skip.
+
 Characters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -260,6 +315,34 @@ Characters
     :members:
     :show-inheritance:
     :no-index:
+
+Method :meth:`get_all`:
+  - A region must be specified.
+  - A token of type ``TokenType.USER`` is required.
+  - kwargs:
+      - **tokken** (TokenType) - Access token.
+
+Method :meth:`get_profile`:
+  - A region must be specified.
+  - A token of type ``TokenType.APPLICATION`` is required.
+  - kwargs:
+      - **tokken** (TokenType) - Access token.
+
+.. note::
+    **\*\*kwargs** allows you not only to pass query parameters in the request
+    but also to override the access token. This is useful if, for example,
+    you have multiple tokens of the 'TokenType.USER' type. You can override the
+    token as follows:
+
+    .. code-block:: python
+        
+        api.clans("EU").get_all(token="other_user_token")
+    
+    .. warning::
+        Don't forget to check the documentation to find out:
+          - Which token type is required for each request.
+          - What query parameters can be passed in the request.
+
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
