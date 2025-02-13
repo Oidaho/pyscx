@@ -11,17 +11,12 @@ class API:
 
     This class provides an interface to communicate with the STALCRAFT: X API. It allows you to manage
     tokens and send HTTP requests to various API endpoints using the appropriate method groups.
-
-    Attributes:
-        http (APISession): An instance of the APISession class used for sending HTTP requests.
-        _tokens (dict[TokenType, str]): A dictionary containing the tokens required for authentication
-            with the API.
     """
 
-    __slots__ = ("http", "_tokens")
+    __slots__ = ("_http", "_tokens")
 
     def __init__(self, tokens: Token | Collection[Token], server: Server) -> None:
-        self.http = APISession(server)
+        self._http = APISession(server)
         self._tokens = self._unpack(tokens)
 
     def _unpack(self, tokens) -> dict[TokenType, str]:
