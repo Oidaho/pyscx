@@ -16,6 +16,12 @@ class API:
     __slots__ = ("_http", "_tokens")
 
     def __init__(self, tokens: Token | Collection[Token], server: Server) -> None:
+        """Initializes the API object with the provided tokens and server.
+
+        Args:
+            tokens (Token | Collection[Token]): A single token or a collection of tokens to be used for authentication.
+            server (Server): The server instance representing the target API server.
+        """
         self._http = APISession(server)
         self._tokens = self._unpack(tokens)
 
@@ -45,6 +51,18 @@ class API:
             raise MissingTokenError(type=type)
 
     def __getattribute__(self, name: str) -> Any:
+        """Intercepts attribute access and returns the appropriate method group for API interaction.
+
+        This method is triggered whenever an attribute is accessed on the `API` object. If the requested attribute
+        is not found on the object itself, the method dynamically creates and returns an instance of `MethodsGroupFabric`,
+        which is responsible for generating method groups for API endpoints.
+
+        Args:
+            name (str): The name of the attribute being accessed.
+
+        Returns:
+            MethodsGroupFabric: An instance of the appropriate method group factory, allowing access to various API endpoints.
+        """
         try:
             return super().__getattribute__(name)
         except AttributeError:

@@ -22,16 +22,6 @@ class MethodsGroup:
     The `MethodsGroup` class is responsible for providing common functionality
     to interact with various API method groups (such as regions, emissions, etc.).
     It provides utilities to wrap data into model instances and manage tokens for API requests.
-
-    Attributes:
-        region (str | None): The region associated with the method group (optional).
-        _http (APISession): The HTTP session object used for making API requests.
-        _tokens (dict): A dictionary containing tokens used for authentication.
-
-    Args:
-        region (str | None): The region to associate with the method group.
-        session (APISession): The HTTP session object used to send requests.
-        tokens (dict): A dictionary of tokens used for authentication (key: token type, value: token string).
     """
 
     __slots__ = ("region", "_http", "_tokens")
@@ -109,6 +99,7 @@ class RegionsMethods(MethodsGroup):
             list[Region]: A list of `Region` objects representing all the regions returned by the API.
         """
         resource = f"/{self.group_name}"
+        kwargs.pop("token")  # To avoid throwing the token into the request
         response = self._http.get(url=resource, params=kwargs)
         return response
 
@@ -119,7 +110,7 @@ class EmissionsMethods(MethodsGroup):
         """Retrieves emission information for the specified region.
 
         Args:
-            **kwargs: Additional arguments for the request.
+            **kwargs: Additional arguments that can be passed to modify the request.
 
         Returns:
             Emission: An instance of the `Emission` model containing the emission data retrieved from the API.
@@ -129,7 +120,7 @@ class EmissionsMethods(MethodsGroup):
         """
         resource = f"{self.region}/{self.group_name[:-1]}"
         headers = {"Authorization": f"Bearer {kwargs.pop('token')}"}
-        response = self._http.get(url=resource, headers=headers)
+        response = self._http.get(url=resource, headers=headers, params=kwargs)
         return self.wrap_data(response.json(), Emission)
 
 
@@ -140,7 +131,7 @@ class FriendsMethods(MethodsGroup):
 
         Args:
             character_name (str): The name of the character whose friends list is to be fetched.
-            **kwargs: Additional arguments for the request.
+            **kwargs: Additional arguments that can be passed to modify the request.
 
         Returns:
             list[str]: A list of strings representing the names of the character's friends.
@@ -150,7 +141,7 @@ class FriendsMethods(MethodsGroup):
         """
         resource = f"{self.region}/{self.group_name}/{character_name}"
         headers = {"Authorization": f"Bearer {kwargs.pop('token')}"}
-        response = self._http.get(url=resource, headers=headers)
+        response = self._http.get(url=resource, headers=headers, params=kwargs)
         return response.json()
 
 
@@ -161,7 +152,7 @@ class AuctionMethods(MethodsGroup):
 
         Args:
             item_id (str): The unique identifier of the item for which to fetch the history.
-            **kwargs: Additional query parameters (e.g., date filters, pagination) to refine the request.
+            **kwargs: Additional arguments that can be passed to modify the request.
 
         Returns:
             list[AuctionRedeemedLot]: A list of `AuctionRedeemedLot` objects representing the item's price history.
@@ -180,7 +171,7 @@ class AuctionMethods(MethodsGroup):
 
         Args:
             item_id (str): The unique identifier of the item for which to fetch the auction lots.
-            **kwargs: Additional query parameters (e.g., filters, pagination) to refine the request.
+            **kwargs: Additional arguments that can be passed to modify the request.
 
         Returns:
             list[AuctionLot]: A list of `AuctionLot` objects representing the auction lots the item has been listed in.
@@ -200,7 +191,7 @@ class CharactersMethods(MethodsGroup):
         """Retrieves a list of characters in the current region.
 
         Args:
-            **kwargs: Additional query parameters (e.g., filters, pagination) to refine the request.
+            **kwargs: Additional arguments that can be passed to modify the request.
 
         Returns:
             list[CharacterInfo]: A list of `CharacterInfo` objects containing information about the characters.
@@ -219,7 +210,7 @@ class CharactersMethods(MethodsGroup):
 
         Args:
             character_name (str): The name of the character whose profile is to be fetched.
-            **kwargs: Additional query parameters (e.g., filters, pagination) to refine the request.
+            **kwargs: Additional arguments that can be passed to modify the request.
 
         Returns:
             FullCharacterInfo: A `FullCharacterInfo` object containing the full profile of the specified character.
@@ -240,7 +231,7 @@ class ClansMethods(MethodsGroup):
 
         Args:
             clan_id (str): The unique identifier of the clan whose information is to be fetched.
-            **kwargs: Additional query parameters (e.g., filters) to refine the request.
+            **kwargs: Additional arguments that can be passed to modify the request.
 
         Returns:
             Clan: A `Clan` object containing detailed information about the specified clan.
@@ -259,7 +250,7 @@ class ClansMethods(MethodsGroup):
 
         Args:
             clan_id (str): The unique identifier of the clan whose members are to be fetched.
-            **kwargs: Additional query parameters (e.g., pagination) to refine the request.
+            **kwargs: Additional arguments that can be passed to modify the request.
 
         Returns:
             list[ClanMember]: A list of `ClanMember` objects representing the members of the specified clan.
@@ -276,9 +267,8 @@ class ClansMethods(MethodsGroup):
     def get_all(self, **kwargs) -> list[Clan]:
         """Retrieves a list of all clans in the current region.
 
-
         Args:
-            **kwargs: Additional query parameters (e.g., filters, pagination) to refine the request.
+            **kwargs: Additional arguments that can be passed to modify the request.
 
         Returns:
             list[Clan]: A list of `Clan` objects representing all the clans in the region.
@@ -293,27 +283,6 @@ class ClansMethods(MethodsGroup):
 
 
 class MethodsGroupFabric:
-    """A factory class responsible for creating method groups for different API endpoints.
-
-    The MethodsGroupFabric class provides an interface to create instances of different
-    method groups based on the specified group type (e.g., "regions", "emissions", etc.).
-    Each method group can be used to interact with a particular set of API endpoints.
-
-    Attributes:
-        _method_groups (dict): A mapping of method group names to corresponding class types.
-        _group_class (type): The class type associated with the given method group.
-        _tokens (dict): A dictionary containing tokens used for authorization.
-        _http (APISession): An HTTP session object used to make requests.
-
-    Args:
-        group (str): The name of the method group. Must be one of the predefined groups in `_method_groups`.
-        http (APISession): The HTTP session used to send requests.
-        tokens (dict): A dictionary of tokens used for authentication (key: token type, value: token string).
-
-    Raises:
-        InvalidMethodGroup: If the provided `group` is not a valid method group name.
-    """
-
     __slots__ = ("_group_class", "_tokens", "_http")
 
     _method_groups = {

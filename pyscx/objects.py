@@ -120,17 +120,7 @@ class Clan(APIObject):
 
 
 class ClanMemberRank(Enum):
-    """A list of ranks within a unit (clan).
-
-    Attributes:
-        RECRUIT (str): Recruit.
-        COMMONER (str): Commoner.
-        SOLDIER (str): Soldier.
-        SERGEANT (str): Sergeant.
-        OFFICER (str): Officer.
-        COLONEL (str): Colonel.
-        LEADER (str): Leader.
-    """
+    """A list of ranks within a unit (clan)."""
 
     RECRUIT = "RECRUIT"
     COMMONER = "COMMONER"
@@ -158,14 +148,7 @@ class ClanMember(APIObject):
 
 
 class CharacterStatType(Enum):
-    """A list of supported types for player statistic values.
-
-    Attributes:
-        INTEGER (str): Represents a statistical value that is an integer (e.g., kills).
-        DECIMAL (str): Represents a statistical value that is a decimal (e.g., k\d).
-        DATE (str): Represents a statistical value that is a date.
-        DURATION (str): Represents a statistical value that is a duration (e.g., playtime).
-    """
+    """A list of supported types for player statistic values."""
 
     INTEGER = "INTEGER"
     DECIMAL = "DECIMAL"
