@@ -14,9 +14,6 @@ class APIObject(BaseModel):
 
     The class supports Pydantic's data validation and serialization, making it easier to handle API
     responses and convert them into Python objects.
-
-    Inherits:
-        BaseModel: The base class from Pydantic that provides data validation and parsing features.
     """
 
     def raw(self) -> dict[str, Any]:
