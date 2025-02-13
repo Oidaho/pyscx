@@ -22,7 +22,7 @@ The core and fundamental entity in **pyscx** is the :class:`API` class.
 This class provides access to the STALCRAFT:X API with automatic handling
 of different types of authorization tokens.
 
-The :class:`pyscx.api.API` class offers a convenient interface for calling API methods,
+The :class:`API` class offers a convenient interface for calling API methods,
 somewhat resembling a builder pattern, although it is not strictly an implementation of it.
 
 .. autoclass:: pyscx.api.API
@@ -43,9 +43,29 @@ In this case, the attribute name will correspond to the name of the API method g
 Token
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The :class:`Token` class serves as an interface for conveniently passing access tokens
+to the :class:`API` class. It allows you to define standard access tokens for
+the :class:`API` class in a clean, concise, and understandable manner, which will
+be **automatically** used by the class when calling API methods.
+
+.. autoclass:: pyscx.token.Token
+    :undoc-members:
+    :show-inheritance:
+    :special-members: __init__
+    :no-index:
+
+To definitively specify the type of the token being used,
+the :class:`TokenType` class is provided, which inherits from :class:`Enum`.
+
+.. autoclass:: pyscx.token.TokenType
+    :undoc-members:
+    :members:
+    :show-inheritance:
+    :no-index:
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-GitHub Database
+Items Database
 ------------------------------------
 
 .. danger::
