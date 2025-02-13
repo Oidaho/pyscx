@@ -77,8 +77,6 @@ print(api.clans(region="EU").get_all())
 
 For detailed documentation, check out the official [docs](https://Oidaho.github.io/pyscx/)
 
-\* at the moment, the link doesn't lead anywhere.
-
 ## 🚀 Project Ideas
 
 Here are some cool project ideas to inspire you:
