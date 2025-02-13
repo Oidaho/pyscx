@@ -27,7 +27,7 @@ jobs:
         run: poetry config virtualenvs.in-project true
 
       - name: Install dependencies
-        run: poetry install --no-interaction --no-root --without dev
+        run: poetry install --no-interaction --no-root --without dev,docs,test
 
       - name: Build release distributions
         run: poetry build
