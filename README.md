@@ -13,7 +13,7 @@ This library is designed to simplify your interaction with the **STALCRAFT: X AP
 Whether you're building tools, analyzing game statistics, or creating custom applications, this library offers an intuitive way to retrieve and work with **STALCRAFT: X** data.
 
 > [!NOTE]
-> STALCRAFT: X API - v1.1.0
+> STALCRAFT: X API - v1.0.0
 >
 > Python 3.13+
 
