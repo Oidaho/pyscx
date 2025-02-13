@@ -5,8 +5,6 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-import sphinx_rtd_theme
-
 project = "pyscx"
 copyright = "2025, Oidaho"
 author = "Oidaho <oidaho.main@yandex.ru>"
@@ -25,4 +23,3 @@ exclude_patterns = []
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "sphinx_rtd_theme"
-html_theme_path = [sphinx_rtd_theme.html_theme_path()]
