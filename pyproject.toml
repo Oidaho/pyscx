@@ -22,7 +22,7 @@ repository = "https://github.com/Oidaho/pyscx"
 documentation = "https://Oidaho.github.io/pyscx/"
 
 [tool.poetry]
-readme = ["README.md", "README.RU.md"]
+readme = ["README.md"]
 classifiers = [
     "Intended Audience :: Developers",
     "Development Status :: 5 - Production/Stable",
