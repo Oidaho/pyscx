@@ -26,7 +26,7 @@ that illustrate the main idea behind the creation of this library.
 
 .. warning::
    Some functions currently available in **pyscx** may not work as expected or may function incorrectly.  
-   This is because the STALCRAFT:X API is currently in the early beta phase (v1.0.0),  
+   This is because the STALCRAFT:X API is currently in the early ``beta v1.0.0``,  
    and for this reason, some functions may behave unexpectedly or not work at all.  
 
    If you encounter any issues, even those not directly related to **pyscx**,  
