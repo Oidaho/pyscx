@@ -49,7 +49,7 @@ pip install git+https://github.com/Oidaho/pyscx.git
 Here’s a quick example to get you started:
 
 ```python
-mport os
+import os
 from dotenv import load_dotenv
 
 from pyscx import Server, API
