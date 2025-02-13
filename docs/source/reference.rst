@@ -18,7 +18,7 @@ This section provides a description of all the classes you will encounter while 
 API
 ------------------------------------
 
-The core and fundamental entity in **pyscx** is the :class:`pyscx.api.API` class.
+The core and fundamental entity in **pyscx** is the :class:`API` class.
 This class provides access to the STALCRAFT:X API with automatic handling
 of different types of authorization tokens.
 
@@ -32,7 +32,18 @@ somewhat resembling a builder pattern, although it is not strictly an implementa
     :special-members: __init__,__getattribute__
     :no-index:
 
+In this class, the query-building function is handled by the :func:`API.__getattribute__`
+method. If an attribute is accessed that doesn't exist in the class,
+the :func:`API.__getattribute__` method interprets this as an **attempt
+to access a specific API methods group** (:class:`MethodsGroup`).
+In this case, the attribute name will correspond to the name of the API method group.
+
 ------------------------------------
+
+Token
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 GitHub Database
 ------------------------------------
