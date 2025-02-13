@@ -21,7 +21,6 @@ repository = "https://github.com/Oidaho/pyscx"
 "Bug Tracker" = "https://github.com/Oidaho/pyscx/issues"
 documentation = "https://Oidaho.github.io/pyscx/"
 
-
 [tool.poetry]
 readme = ["README.md", "README.RU.md"]
 classifiers = [
@@ -42,9 +41,10 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.group.dev.dependencies]
 python-dotenv = "^1.0.1"
 pytest = "^8.3.4"
+
+[tool.poetry.group.docs.dependencies]
 sphinx = "^8.1.3"
 sphinx-rtd-theme = "^3.0.2"
-
 
 [tool.pytest.ini_options]
 minversion = "6.0"
