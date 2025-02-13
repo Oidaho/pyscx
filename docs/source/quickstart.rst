@@ -48,5 +48,5 @@ Example
 
 .. note::
 
-    To facilitate intuitive and efficient management of your tokens, the library utilizes the :class:`Token` and
-    :class:`TokenType` classes.
+    To facilitate intuitive and efficient management of your tokens,
+    the library utilizes the :class:`Token` and :class:`TokenType` classes.
