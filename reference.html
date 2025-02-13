@@ -45,7 +45,32 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Package Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Package Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#api">API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#token">Token</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-objects">API Objects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#regions">Regions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#emissions">Emissions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#auction">Auction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clans">Clans</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#characters">Characters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-methods">API Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Regions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Emissions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#friends">Friends</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Auction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Clans</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Characters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#items-database">Items Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#async-api">Async API</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Oidaho/pyscx/issues">Bug Tracker</a></li>
 </ul>
@@ -75,7 +100,276 @@
            <div itemprop="articleBody">
              
   <section id="package-reference">
-<h1>Package Reference<a class="headerlink" href="#package-reference" title="Link to this heading"></a></h1>
+<span id="reference"></span><h1>Package Reference<a class="headerlink" href="#package-reference" title="Link to this heading"></a></h1>
+<p>This section provides a description of all the classes you will encounter while using <strong>pyscx</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>“Our task is to invent. Yours is to use.” © Oidaho</strong></p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Before you dive into the documentation, we strongly recommend reviewing the <a class="reference internal" href="examples.html#examples"><span class="std std-ref">Usage Examples</span></a> section.
+By looking at the practical use of <strong>pyscx</strong>, it will be easier to navigate the <a class="reference internal" href="#reference"><span class="std std-ref">Package Reference</span></a>.</p>
+</div>
+<hr class="docutils" />
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<p>The core and fundamental entity in <strong>pyscx</strong> is the <code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code> class.
+This class provides access to the STALCRAFT:X API with automatic handling
+of different types of authorization tokens.</p>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code> class offers a convenient interface for calling API methods,
+somewhat resembling a builder pattern, although it is not strictly an implementation of it.</p>
+<p>In this class, the query-building function is handled by the <code class="xref py py-func docutils literal notranslate"><span class="pre">API.__getattribute__()</span></code>
+method. If an attribute is accessed that doesn’t exist in the class,
+the <code class="xref py py-func docutils literal notranslate"><span class="pre">API.__getattribute__()</span></code> method interprets this as an <strong>attempt
+to access a specific API methods group</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">MethodsGroup</span></code>).
+In this case, the attribute name will correspond to the name of the API method group.</p>
+<hr class="docutils" />
+<section id="token">
+<h3>Token<a class="headerlink" href="#token" title="Link to this heading"></a></h3>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code> class serves as an interface for conveniently passing access tokens
+to the <code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code> class. It allows you to define standard access tokens for
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code> class in a clean, concise, and understandable manner, which will
+be <strong>automatically</strong> used by the class when calling API methods.</p>
+<p>To definitively specify the type of the token being used,
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">TokenType</span></code> class is provided, which inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code>.</p>
+</section>
+<hr class="docutils" />
+<section id="api-objects">
+<h3>API Objects<a class="headerlink" href="#api-objects" title="Link to this heading"></a></h3>
+<p>For your convenience and ease of working with the data you will receive from the
+STALCRAFT:X API, models have been implemented to wrap raw data into Python objects.</p>
+<p>These models are implemented using the <code class="docutils literal notranslate"><span class="pre">Pydantic</span></code> library. Therefore,
+hey inherit all the functionality offered by the <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code> class
+from <code class="docutils literal notranslate"><span class="pre">Pydantic</span></code>. The <code class="xref py py-class docutils literal notranslate"><span class="pre">APIObject</span></code> class is created based on the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code>, and all other representations inherit from it.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The documentation for the <code class="xref py py-func docutils literal notranslate"><span class="pre">raw()</span></code> function states that it returns the data
+in its original form. This means that the case of the keys in the data dictionary and
+the value formats will be restored to their original, and any fields with the value <code class="docutils literal notranslate"><span class="pre">None</span></code>
+will be removed.</p>
+</div>
+<p>All API objects can be divided into specific groups, which reflect the general association
+of models with a particular method or set of API methods.</p>
+<section id="regions">
+<h4>Regions<a class="headerlink" href="#regions" title="Link to this heading"></a></h4>
+</section>
+<section id="emissions">
+<h4>Emissions<a class="headerlink" href="#emissions" title="Link to this heading"></a></h4>
+</section>
+<section id="auction">
+<h4>Auction<a class="headerlink" href="#auction" title="Link to this heading"></a></h4>
+</section>
+<section id="clans">
+<h4>Clans<a class="headerlink" href="#clans" title="Link to this heading"></a></h4>
+</section>
+<section id="characters">
+<h4>Characters<a class="headerlink" href="#characters" title="Link to this heading"></a></h4>
+</section>
+</section>
+<hr class="docutils" />
+<section id="api-methods">
+<h3>API Methods<a class="headerlink" href="#api-methods" title="Link to this heading"></a></h3>
+<p>When you attempt to access the <code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code> class in an effort to call an API method,
+the code structure will likely look something like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">api</span><span class="o">.</span><span class="n">clans</span><span class="p">(</span><span class="s2">&quot;EU&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_all</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In this case, the following will happen:</p>
+<ol class="arabic simple">
+<li><p>You will attempt to access the <code class="docutils literal notranslate"><span class="pre">regions</span></code> attribute.</p></li>
+<li><p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">__getattribute__()</span></code> method will not find an attribute named <code class="docutils literal notranslate"><span class="pre">regions</span></code> and will return an <strong>instance</strong> of the method group factory class (<code class="xref py py-class docutils literal notranslate"><span class="pre">MethodsGroupFabric</span></code>).</p></li>
+<li><p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">__call__()</span></code> method of the <code class="xref py py-class docutils literal notranslate"><span class="pre">MethodsGroupFabric</span></code> class will be invoked, after which an instance of the <code class="xref py py-class docutils literal notranslate"><span class="pre">MethodsGroup</span></code> class will be returned with the <strong>region</strong> pre-set.</p></li>
+<li><p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">get_all()</span></code> method will be called on the instance of the <code class="xref py py-class docutils literal notranslate"><span class="pre">MethodsGroup</span></code>, which retrieves the list of all game regions.</p></li>
+</ol>
+<p>Naturally, this sequence of actions is a generalization.
+In practice, you will receive instances of classes that inherit from <code class="xref py py-class docutils literal notranslate"><span class="pre">MethodsGroup</span></code>.
+These instances will contain methods related to a specific group of the API.</p>
+<section id="id1">
+<h4>Regions<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Method <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_all()</span></code>:</dt><dd><ul class="simple">
+<li><p>No region specification is required.</p></li>
+<li><p>No token is required.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h4>Emissions<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Method <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_info()</span></code>:</dt><dd><ul class="simple">
+<li><p>A region must be specified.</p></li>
+<li><p>A token of type <code class="docutils literal notranslate"><span class="pre">TokenType.APPLICATION</span></code> is required.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="friends">
+<h4>Friends<a class="headerlink" href="#friends" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Method <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_all()</span></code>:</dt><dd><ul class="simple">
+<li><p>A region must be specified.</p></li>
+<li><p>A token of type <code class="docutils literal notranslate"><span class="pre">TokenType.USER</span></code> is required.</p></li>
+<li><dl class="simple">
+<dt>kwargs:</dt><dd><ul>
+<li><p><strong>tokken</strong> (TokenType) - Access token.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h4>Auction<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Method <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_item_history()</span></code>:</dt><dd><ul class="simple">
+<li><p>A region must be specified.</p></li>
+<li><p>A token of type <code class="docutils literal notranslate"><span class="pre">TokenType.APPLICATION</span></code> is required.</p></li>
+<li><dl class="simple">
+<dt>kwargs:</dt><dd><ul>
+<li><p><strong>tokken</strong> (TokenType) - Access token.</p></li>
+<li><p><strong>additional</strong> (bool) - Whether to include additional information about lots: <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>. By default <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>limit</strong> (int) - Amount of prices to return, starting from offset, min <code class="docutils literal notranslate"><span class="pre">0</span></code>, max <code class="docutils literal notranslate"><span class="pre">200</span></code>, default <code class="docutils literal notranslate"><span class="pre">20</span></code>.</p></li>
+<li><p><strong>offset</strong> (int) - Amount of prices in list to skip.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Method <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_item_lots()</span></code>:</dt><dd><ul class="simple">
+<li><p>A region must be specified.</p></li>
+<li><p>A token of type <code class="docutils literal notranslate"><span class="pre">TokenType.APPLICATION</span></code> is required.</p></li>
+<li><dl class="simple">
+<dt>kwargs:</dt><dd><ul>
+<li><p><strong>tokken</strong> (TokenType) - Access token.</p></li>
+<li><p><strong>additional</strong> (bool) - Whether to include additional information about lots: <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>. By default <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>limit</strong> (int) - Amount of lots to return, starting from offset, min <code class="docutils literal notranslate"><span class="pre">0</span></code>, max <code class="docutils literal notranslate"><span class="pre">200</span></code>, default <code class="docutils literal notranslate"><span class="pre">20</span></code>.</p></li>
+<li><p><strong>offset</strong> (int) - Amount of lots in list to skip.</p></li>
+<li><p><strong>order</strong> (str) - Either <code class="docutils literal notranslate"><span class="pre">asc</span></code> or <code class="docutils literal notranslate"><span class="pre">desc</span></code>.</p></li>
+<li><p><strong>sort</strong> (str) - Property to sort by, one of: <code class="docutils literal notranslate"><span class="pre">time_created</span></code>, <code class="docutils literal notranslate"><span class="pre">time_left</span></code>, <code class="docutils literal notranslate"><span class="pre">current_price</span></code>, <code class="docutils literal notranslate"><span class="pre">buyout_price</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h4>Clans<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Method <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_info()</span></code>:</dt><dd><ul class="simple">
+<li><p>A region must be specified.</p></li>
+<li><p>A token of type <code class="docutils literal notranslate"><span class="pre">TokenType.APPLICATION</span></code> is required.</p></li>
+<li><dl class="simple">
+<dt>kwargs:</dt><dd><ul>
+<li><p><strong>tokken</strong> (TokenType) - Access token.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Method <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_members()</span></code>:</dt><dd><ul class="simple">
+<li><p>A region must be specified.</p></li>
+<li><p>A token of type <code class="docutils literal notranslate"><span class="pre">TokenType.USER</span></code> is required.</p></li>
+<li><dl class="simple">
+<dt>kwargs:</dt><dd><ul>
+<li><p><strong>tokken</strong> (TokenType) - Access token.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Method <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_all()</span></code>:</dt><dd><ul class="simple">
+<li><p>A region must be specified.</p></li>
+<li><p>A token of type <code class="docutils literal notranslate"><span class="pre">TokenType.APPLICATION</span></code> is required.</p></li>
+<li><dl class="simple">
+<dt>kwargs:</dt><dd><ul>
+<li><p><strong>tokken</strong> (TokenType) - Access token.</p></li>
+<li><p><strong>limit</strong> (int) - Amount of lots to return, starting from offset, min <code class="docutils literal notranslate"><span class="pre">0</span></code>, max <code class="docutils literal notranslate"><span class="pre">200</span></code>, default <code class="docutils literal notranslate"><span class="pre">20</span></code>.</p></li>
+<li><p><strong>offset</strong> (int) - Amount of lots in list to skip.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id5">
+<h4>Characters<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>Method <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_all()</span></code>:</dt><dd><ul class="simple">
+<li><p>A region must be specified.</p></li>
+<li><p>A token of type <code class="docutils literal notranslate"><span class="pre">TokenType.USER</span></code> is required.</p></li>
+<li><dl class="simple">
+<dt>kwargs:</dt><dd><ul>
+<li><p><strong>tokken</strong> (TokenType) - Access token.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Method <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_profile()</span></code>:</dt><dd><ul class="simple">
+<li><p>A region must be specified.</p></li>
+<li><p>A token of type <code class="docutils literal notranslate"><span class="pre">TokenType.APPLICATION</span></code> is required.</p></li>
+<li><dl class="simple">
+<dt>kwargs:</dt><dd><ul>
+<li><p><strong>tokken</strong> (TokenType) - Access token.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>**kwargs</strong> allows you not only to pass query parameters in the request
+but also to override the access token. This is useful if, for example,
+you have multiple tokens of the ‘TokenType.USER’ type. You can override the
+token as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">api</span><span class="o">.</span><span class="n">clans</span><span class="p">(</span><span class="s2">&quot;EU&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">&quot;other_user_token&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<dl class="simple">
+<dt>Don’t forget to check the documentation to find out:</dt><dd><ul class="simple">
+<li><p>Which token type is required for each request.</p></li>
+<li><p>What query parameters can be passed in the request.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="items-database">
+<h2>Items Database<a class="headerlink" href="#items-database" title="Link to this heading"></a></h2>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>The functionality related to this section is under development.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="async-api">
+<h2>Async API<a class="headerlink" href="#async-api" title="Link to this heading"></a></h2>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>The functionality related to this section is under development.</p>
+</div>
+</section>
 </section>
 
 

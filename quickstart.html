@@ -44,7 +44,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">Package Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Oidaho/pyscx/issues">Bug Tracker</a></li>
@@ -75,7 +82,51 @@
            <div itemprop="articleBody">
              
   <section id="quickstart">
-<h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h1>
+<span id="id1"></span><h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h1>
+<p>This guide will help you quickly get started with the library.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>To install the library, simply use <strong>pip</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pyscx
+</pre></div>
+</div>
+</section>
+<section id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
+<p>Once installed, you can start using the API by creating an instance of the <code class="xref py py-class docutils literal notranslate"><span class="pre">API</span></code> class.</p>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyscx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Server</span><span class="p">,</span> <span class="n">API</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyscx.token</span><span class="w"> </span><span class="kn">import</span> <span class="n">Token</span><span class="p">,</span> <span class="n">TokenType</span>
+
+
+<span class="n">load_dotenv</span><span class="p">()</span>
+
+<span class="n">app_token</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span>
+    <span class="n">value</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DEMO_APP_ACCESS_TOKEN&quot;</span><span class="p">),</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">TokenType</span><span class="o">.</span><span class="n">APPLICATION</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">user_token</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span>
+    <span class="n">value</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DEMO_USER_ACCESS_TOKEN&quot;</span><span class="p">),</span>
+    <span class="nb">type</span><span class="o">=</span><span class="n">TokenType</span><span class="o">.</span><span class="n">USER</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">api</span> <span class="o">=</span> <span class="n">API</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">Server</span><span class="o">.</span><span class="n">DEMO</span><span class="p">,</span> <span class="n">tokens</span><span class="o">=</span><span class="p">[</span><span class="n">user_token</span><span class="p">,</span> <span class="n">app_token</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">clans</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="s2">&quot;EU&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_all</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To facilitate intuitive and efficient management of your tokens,
+the library utilizes the <code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">TokenType</span></code> classes.</p>
+</div>
+</section>
+</section>
 </section>
 
 
