@@ -66,4 +66,4 @@ class API:
         try:
             return super().__getattribute__(name)
         except AttributeError:
-            return MethodsGroupFabric(group=name, tokens=self._tokens, http=self.http)
+            return MethodsGroupFabric(group=name, tokens=self._tokens, http=self._http)

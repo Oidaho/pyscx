@@ -99,7 +99,7 @@ class RegionsMethods(MethodsGroup):
             list[Region]: A list of `Region` objects representing all the regions returned by the API.
         """
         resource = f"/{self.group_name}"
-        kwargs.pop("token")  # To avoid throwing the token into the request
+        kwargs.pop("token", None)  # To avoid throwing the token into the request
         response = self._http.get(url=resource, params=kwargs)
         return response
 
