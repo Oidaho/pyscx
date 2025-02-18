@@ -2,7 +2,7 @@ from enum import Enum
 
 import requests
 
-DEFAULT_AGENT = "pyscx/1.1.2 (+https://github.com/Oidaho/pyscx)"
+DEFAULT_AGENT = "pyscx/1.1.3 (+https://github.com/Oidaho/pyscx)"
 
 
 class Server(Enum):
