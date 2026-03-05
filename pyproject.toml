@@ -1,3 +1,7 @@
+# ============================
+# Project
+# ============================
+
 [project]
 name = "pyscx"
 version = "2.0.0"
@@ -27,6 +31,9 @@ classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 ]
 requires-python = "==3.13.*"
+packages = [
+    "pyscx"
+]
 dependencies = [
     "requests (>=2.32.3,<3.0.0)",
     "cachetools (>=5.5.1,<6.0.0)",
@@ -36,11 +43,6 @@ dynamic = [
     "readme",
     "classifiers",
 ]
-
-[project.urls]
-repository = "https://github.com/Oidaho/pyscx"
-"Bug Tracker" = "https://github.com/Oidaho/pyscx/issues"
-documentation = "https://Oidaho.github.io/pyscx/"
 
 [dependency-groups]
 dev = [
@@ -54,22 +56,55 @@ docs = [
     "sphinx-rtd-theme>=3.0.2,<4",
 ]
 
+[project.urls]
+repository = "https://github.com/Oidaho/pyscx"
+"Bug Tracker" = "https://github.com/Oidaho/pyscx/issues"
+documentation = "https://Oidaho.github.io/pyscx/"
+
+# ============================
+# UV 
+# ============================
+
 [tool.uv]
-package=true
+package = true
 default-groups = "all"
+
+[tool.uv.build-backend]
+module-name = "pysxc"
+module-root = ""
 
 [build-system]
 requires = ["uv_build>=0.9.2,<0.10.0"]
 build-backend = "uv_build"
 
+# ============================
+# Ruff 
+# ============================
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+# ============================
+# Pytest 
+# ============================
+
 [tool.pytest.ini_options]
-minversion = "6.0"
-addopts = "-ra -v"
+log_cli = true
+log_cli_level = "DEBUG"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+log_color = true  
+testpaths = ["tests"]
+python_files = ["test_*.py"]
 console_output_style = "progress"
-testpaths = [
-    "tests",
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "--disable-warnings"
+norecursedirs = [
+    ".venv",
+    "build",
+    "dist",
+    "__pycache__"
 ]
-python_files = [
-    "test_*.py",
-    "check_*.py",
-]
+
