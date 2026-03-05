@@ -1,52 +1,66 @@
 [project]
 name = "pyscx"
-version = "1.1.3"
-description = "A library for interacting with the STALCRAFT: X API"
+version = "2.0.0"
+readme = "README.md"
+license = { text = "LICENSE" }
+description = "Library for interacting with the STALCRAFT: X API"
 authors = [
-    {name = "Oidaho", email = "oidaho.main@yandex.ru"}
+    { name = "Oidaho", email = "oidaho.main@yandex.ru" }
 ]
-license = {text = "LICENSE"}
-requires-python = ">=3.13"
+keywords = [
+    "api",
+    "library",
+    "eapi",
+    "stalcraft",
+    "package",
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Topic :: Games/Entertainment",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Natural Language :: English",
+    "Natural Language :: Russian",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+]
+requires-python = "==3.13.*"
 dependencies = [
     "requests (>=2.32.3,<3.0.0)",
     "cachetools (>=5.5.1,<6.0.0)",
-    "pydantic (>=2.10.6,<3.0.0)"
+    "pydantic (>=2.10.6,<3.0.0)",
 ]
-
-dynamic = [ "readme", "classifiers" ]
-keywords = [ "api", "library", "eapi", "stalcraft", "package" ]
+dynamic = [
+    "readme",
+    "classifiers",
+]
 
 [project.urls]
 repository = "https://github.com/Oidaho/pyscx"
 "Bug Tracker" = "https://github.com/Oidaho/pyscx/issues"
 documentation = "https://Oidaho.github.io/pyscx/"
 
-[tool.poetry]
-readme = ["README.md"]
-classifiers = [
-    "Intended Audience :: Developers",
-    "Development Status :: 5 - Production/Stable",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-    "Natural Language :: English",
-    "Natural Language :: Russian",
-    "Programming Language :: Python",
-    "Topic :: Games/Entertainment",
-    "Topic :: Software Development :: Libraries :: Python Modules"
+[dependency-groups]
+dev = [
+    "python-dotenv>=1.0.1,<2",
+]
+test = [
+    "pytest>=8.3.4,<9",
+]
+docs = [
+    "sphinx>=8.1.3,<9",
+    "sphinx-rtd-theme>=3.0.2,<4",
 ]
 
+[tool.uv]
+package=true
+default-groups = "all"
+
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.group.dev.dependencies]
-python-dotenv = "^1.0.1"
-
-[tool.poetry.group.test.dependencies]
-pytest = "^8.3.4"
-
-[tool.poetry.group.docs.dependencies]
-sphinx = "^8.1.3"
-sphinx-rtd-theme = "^3.0.2"
+requires = ["uv_build>=0.9.2,<0.10.0"]
+build-backend = "uv_build"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
