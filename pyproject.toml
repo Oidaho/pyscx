@@ -39,10 +39,6 @@ dependencies = [
     "cachetools (>=5.5.1,<6.0.0)",
     "pydantic (>=2.10.6,<3.0.0)",
 ]
-dynamic = [
-    "readme",
-    "classifiers",
-]
 
 [dependency-groups]
 dev = [
@@ -70,7 +66,7 @@ package = true
 default-groups = "all"
 
 [tool.uv.build-backend]
-module-name = "pysxc"
+module-name = "pyscx"
 module-root = ""
 
 [build-system]
