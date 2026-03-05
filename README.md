@@ -1,11 +1,14 @@
 # ☢️ PYSCX
 
-![Technical banner](https://github.com/user-attachments/assets/a82243e5-6f38-46a9-89bd-453bb051b557)
+[![English](https://img.shields.io/badge/lang-English-blue?style=for-the-badge)](README.md)
+[![Русский](https://img.shields.io/badge/lang-Русский-red?style=for-the-badge)](README.RU.md)
+
+![Project banner](https://github.com/user-attachments/assets/a82243e5-6f38-46a9-89bd-453bb051b557)
 
 ![GitHub Release](https://img.shields.io/github/v/release/Oidaho/pyscx)
 ![GitHub Downloads](https://img.shields.io/github/downloads/Oidaho/pyscx/total)
 
-![GitHub watchers](https://img.shields.io/github/watchers/oidaho/pyscx)
+![GitHub watchers](https://img.shields.io/github/watchers/Oidaho/pyscx)
 ![GitHub Repo stars](https://img.shields.io/github/stars/Oidaho/pyscx)
 
 This library is designed to simplify your interaction with the **STALCRAFT: X API**, providing a robust and developer-friendly interface for accessing game data.
@@ -15,7 +18,7 @@ Whether you're building tools, analyzing game statistics, or creating custom app
 > [!NOTE]
 > STALCRAFT: X API - v1.0.0
 >
-> Python 3.13+
+> Python 3.13
 
 ---
 
