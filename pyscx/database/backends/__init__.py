@@ -1,6 +1,6 @@
 from ._abc import ReadingBackend
 from ._types import ReadBuffer, StreamBuffer
-from .backends import LocalReadingBackend, RemoteReadingBackend
+from .readers import LocalReadingBackend, RemoteReadingBackend
 
 __all__ = [
     "RemoteReadingBackend",

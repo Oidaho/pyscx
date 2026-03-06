@@ -1,3 +1,4 @@
+import asyncio
 from io import BytesIO
 from pathlib import Path
 from typing import Final
@@ -63,11 +64,13 @@ class LocalReadingBackend(ReadingBackend):
 class RemoteReadingBackend(ReadingBackend):
     """Async Backend for reading files from a remote repository."""
 
-    def __init__(self, session: aiohttp.ClientSession, base_url: str | None = None):
+    def __init__(self, session: aiohttp.ClientSession | None = None, base_url: str | None = None):
         """Class initialization.
 
         Args:
-            session (aiohttp.ClientSession): Aiohttp session client.
+            session (aiohttp.ClientSession | None, optional): Aiohttp session client.
+                If None, the backend will create and manage its own session.
+                Defaults to None.
             base_url (str | None, optional): The base URL pointing to the
                 GtiHub RawContent API for the remote repository containing the
                 STALCRAFT: X database. If you pass the value None, then the
@@ -75,7 +78,12 @@ class RemoteReadingBackend(ReadingBackend):
                 Defaults to None.
         """
         self.base_url = (base_url or STALCRAFT_DATABASE_REMOTE).rstrip("/") + "/"
-        self._session = session
+        self._session = session or aiohttp.ClientSession()  # TODO: Add default client settings
+
+    def __del__(self) -> None:
+        """Ensure that the aiohttp session is closed when the backend instance is deleted."""
+        if self._session and not self._session.closed:
+            asyncio.create_task(self._session.close())
 
     async def read(self, uri: str | Path) -> ReadBuffer:
         """Read full file into memory.
