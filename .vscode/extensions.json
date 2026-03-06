@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "njpwerner.autodocstring",                      // Google stule documentation snippets
+        "aaron-bond.better-comments",                   // Rainbow comments
+        "DavidAnson.vscode-markdownlint",               // Markdown linting
+        "charliermarsh.ruff",                           // Code linting and fomrating
+        "charliermarsh.ty",                             // Typechecking
+        "ms-python.python",                             // Python lang support
+        "ms-python.debugpy",                            // Python debug support
+        "streetsidesoftware.code-spell-checker",        // Spell checking
+    ],
+    "unwantedRecommendations": []
+}
