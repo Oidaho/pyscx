@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 
+from PIL.Image import Image
+from pyscx.entities import StalcraftEntity
+
 from ._types import ReadBuffer, StreamBuffer
 
 
@@ -41,3 +44,31 @@ class ReadingBackend(ABC):
         msg = "The method is not implemented in the child class."
 
         raise NotImplementedError(msg) from None
+
+
+class Deserializer[T: StalcraftEntity | Image](ABC):
+    """Abstract deserializer for parsing data from buffers."""
+
+    _extension: str
+    target_type: type[T]
+
+    @abstractmethod
+    async def deserialize(self, buffer: ReadBuffer) -> T:
+        """Deserialize data from a buffer.
+
+        Args:
+            buffer (ReadBuffer): File-like binary buffer containing the
+                data to deserialize.
+        """
+        msg = "The method is not implemented in the child class."
+        raise NotImplementedError(msg) from None
+
+    @property
+    def ext(self) -> str:
+        """File extension associated with this deserializer."""
+        return self._extension
+
+    @ext.setter
+    def ext(self, value: str) -> None:
+        """File extension setter for the deserializer."""
+        self._extension = value

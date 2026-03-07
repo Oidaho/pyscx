@@ -1,5 +1,6 @@
-from ._abc import ReadingBackend
+from ._abc import Deserializer, ReadingBackend
 from ._types import ReadBuffer, StreamBuffer
+from .deserializers import JsonDeserializer, PngDeserializer
 from .readers import LocalReadingBackend, RemoteReadingBackend
 
 __all__ = [
@@ -8,4 +9,7 @@ __all__ = [
     "ReadingBackend",
     "StreamBuffer",
     "ReadBuffer",
+    "Deserializer",
+    "JsonDeserializer",
+    "PngDeserializer",
 ]
