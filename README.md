@@ -3,7 +3,7 @@
 [![English](https://img.shields.io/badge/lang-English-blue?style=for-the-badge)](README.md)
 [![Русский](https://img.shields.io/badge/lang-Русский-red?style=for-the-badge)](README.RU.md)
 
-![Project banner](https://github.com/user-attachments/assets/a82243e5-6f38-46a9-89bd-453bb051b557)
+![Project banner](https://github.com/user-attachments/assets/a313b354-d952-41d6-9008-7b1fb3a27e78)
 
 ![GitHub Release](https://img.shields.io/github/v/release/Oidaho/pyscx)
 ![GitHub Downloads](https://img.shields.io/github/downloads/Oidaho/pyscx/total)
