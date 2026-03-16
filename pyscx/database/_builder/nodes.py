@@ -1,6 +1,7 @@
 from pathlib import Path
+from typing import Any
 
-from pyscx.database import ReadingBackend
+from pyscx.database.backends import Deserializer, ReadBuffer, ReadingBackend
 
 # TODO: Consider using the GitHub API in addition to the RawContent API
 # for example, to obtain file data (list of files in a directory, metadata, etc.).
@@ -9,21 +10,21 @@ from pyscx.database import ReadingBackend
 class Node:
     """A node for building API request trees."""
 
-    __slots__ = ("_backend", "_uri", "_ext")
+    __slots__ = ("_backend", "_deserializer", "_uri")
 
     def __init__(
-        self, backend: ReadingBackend, uri: Path | None = None, extension: str = ".json"
+        self, backend: ReadingBackend, deserializer: Deserializer, uri: Path | None = None
     ) -> None:
         """Class initialization.
 
         Args:
             backend (ReadingBackend): Backend responsible for reading data from the source.
+            deserializer (Deserializer): Deserializer for data buffers.
             uri (Path | None): URI to the file source. Defaults to None.
-            extension (str): File extension for data files. Defaults to ".json".
         """
         self._backend = backend
+        self._deserializer = deserializer
         self._uri = uri or Path("/")
-        self._ext = extension
 
     def _child[T: Node](self, class_: type[T], resource: str, extension: str | None = None) -> T:
         """Create a child node with the specified class, resource, and optional extension.
@@ -37,21 +38,35 @@ class Node:
         Returns:
             T: Child node instance.
         """
-        return class_(self._backend, self._uri / resource, extension or self._ext)
+        return class_(self._backend, self._deserializer, self._uri / resource)
 
 
 class GetterNode(Node):
     """Node that fetches data by ID using the backend."""
 
-    async def __call__(self, id: str) -> None:
+    # TODO: Specify the return type of __call__ method
+    async def __call__(self, id: str) -> Any:
         """Fetch data by ID using the backend.
 
         Args:
-            id (str): _description_
+            id (str): ID of the data to fetch (filename exactly).
         """
-        uri = self._uri / (id + self._ext)
+        uri = self._uri / (id + self._deserializer.ext)
 
-        await self._backend.read(uri)
+        read_buffer = await self.get_buffer(uri)
+
+        return await self._deserializer.deserialize(read_buffer)
+
+    async def get_buffer(self, uri: Path) -> ReadBuffer:
+        """Get a read buffer (raw data representation) for the specified URI.
+
+        Args:
+            uri (Path): URI for which to get the buffer.
+
+        Returns:
+            ReadBuffer: The read buffer for the specified URI.
+        """
+        return await self._backend.read(uri)
 
 
 class VariantsGetterNode(GetterNode):
@@ -61,14 +76,17 @@ class VariantsGetterNode(GetterNode):
     for handling variants.
     """
 
-    async def variants(self, id: str, number: int) -> None:
+    # TODO: Specify the return type of variants method
+    async def variants(self, id: str, number: int) -> Any:
         """Fetch data variants by ID and number using the backend.
 
         Args:
             id (str): ID of the data to fetch (filename exactly).
             number (int): Number of the variant to fetch.
         """
-        file_name = str(number) + self._ext
+        file_name = str(number) + self._deserializer.ext
         uri = self._uri.joinpath(*["_variants", id], file_name)
 
-        await self._backend.read(uri)
+        read_buffer = await self.get_buffer(uri)
+
+        return await self._deserializer.deserialize(read_buffer)
