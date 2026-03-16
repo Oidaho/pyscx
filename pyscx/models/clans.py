@@ -12,8 +12,8 @@ class ClanMemberRank(StrEnum):
 
     RECRUIT = "RECRUIT"
     COMMONER = "COMMONER"
-    SOLDIER = "SOLIDER"  # API spelling error
-    SERGEANT = "SERGANT"  # API spelling error
+    SOLDIER = "SOLDIER"  # API spelling error
+    SERGEANT = "SERGEANT"  # API spelling error
     OFFICER = "OFFICER"
     COLONEL = "COLONEL"
     LEADER = "LEADER"

@@ -8,6 +8,44 @@ from ._base import StalcraftEntity
 from .clans import ClanMember, Clan
 
 
+# {
+#   "username": "string",
+#   "uuid": "string",
+#   "status": "string",
+#   "alliance": "string",
+#   "lastLogin": "2019-08-24T14:15:22Z",
+#   "displayedAchievements": [
+#     "string"
+#   ],
+#   "clan": {
+#     "info": {
+#       "id": "string",
+#       "name": "string",
+#       "tag": "string",
+#       "level": 0,
+#       "levelPoints": 0,
+#       "registrationTime": "2019-08-24T14:15:22Z",
+#       "alliance": "string",
+#       "description": "string",
+#       "leader": "string",
+#       "memberCount": 0
+#     },
+#     "member": {
+#       "name": "string",
+#       "rank": "RECRUIT",
+#       "joinTime": "2019-08-24T14:15:22Z"
+#     }
+#   },
+#   "stats": [
+#     {
+#       "id": "string",
+#       "type": "INTEGER",
+#       "value": {}
+#     }
+#   ]
+# }
+
+
 class CharacterStatType(StrEnum):
     """A list of supported types for player statistic values."""
 

@@ -1,4 +1,4 @@
-from ._base import StalcraftEntity
+from ._base import StalcraftEntity, StalcraftIcon
 from .auction import AuctionLot, RedeemedAuctionLot
 from .characters import (
     Character,
@@ -13,6 +13,7 @@ from .regions import Region
 
 __all__ = [
     "StalcraftEntity",
+    "StalcraftIcon",
     "AuctionLot",
     "RedeemedAuctionLot",
     "Character",
