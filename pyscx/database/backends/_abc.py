@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from PIL.Image import Image
-from pyscx.entities import StalcraftEntity
+from pyscx.models import StalcraftEntity, StalcraftIcon
 
 from ._types import ReadBuffer, StreamBuffer
 
@@ -46,7 +45,7 @@ class ReadingBackend(ABC):
         raise NotImplementedError(msg) from None
 
 
-class Deserializer[T: StalcraftEntity | Image](ABC):
+class Deserializer[T: StalcraftEntity | StalcraftIcon](ABC):
     """Abstract deserializer for parsing data from buffers."""
 
     _extension: str
