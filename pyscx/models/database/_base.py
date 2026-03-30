@@ -1,8 +1,6 @@
 from collections.abc import Mapping
 
-
 from pydantic import AliasPath, BaseModel, Field, model_validator
-
 
 from pyscx.enums import (
     ArmorCategory,
@@ -14,11 +12,8 @@ from pyscx.enums import (
     OtherCategory,
     WeaponCategory,
 )
-
 from pyscx.enums import ItemCategory as ItemCategory_
-
 from pyscx.models import StalcraftEntity
-
 
 type Subcategory = (
     ArmorCategory
@@ -54,7 +49,7 @@ class ItemName(BaseModel):
     """Represents the name of an item, including its key and translations."""
 
     key: str = Field(validation_alias=AliasPath("key"))
-    value: ItemNameTranslation = Field(validation_alias=AliasPath("lines"))
+    translation: ItemNameTranslation = Field(validation_alias=AliasPath("lines"))
 
 
 class ItemCategory(BaseModel):
@@ -79,7 +74,7 @@ class ItemCategory(BaseModel):
         return {"name": category, "subcategory": subcategory}
 
 
-class Item(StalcraftEntity):
+class GameItem(StalcraftEntity):
     """Base game item model."""
 
     id: str

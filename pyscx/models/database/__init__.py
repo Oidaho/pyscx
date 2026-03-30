@@ -1,3 +1,3 @@
-from ._base import Item
+from ._base import GameItem
 
-__all__ = ["Item"]
+__all__ = ["GameItem"]
