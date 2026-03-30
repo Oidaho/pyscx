@@ -31,7 +31,7 @@ class StalcraftEntity(BaseModel):
 
 
 class StalcraftIcon(BaseModel):
-    """_summary_"""
+    """Representation of an icon image for an in-game item."""
 
     width: int
     height: int
@@ -39,7 +39,7 @@ class StalcraftIcon(BaseModel):
     channels: int = 4
     format: str = "PNG"
 
-    def to_pillow(self) -> "PILImage":
+    def to_pillow(self) -> PILImage:
         """Convert to PIL.Image (with lazy import).
         Requires Pillow installed only when called.
 
