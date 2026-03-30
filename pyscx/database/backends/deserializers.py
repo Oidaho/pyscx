@@ -12,7 +12,7 @@ class PngDeserializer(Deserializer[StalcraftIcon]):
     _extension = ".png"
     target_type = StalcraftIcon
 
-    async def deserialize(self, buffer: ReadBuffer) -> StalcraftIcon:
+    def deserialize(self, buffer: ReadBuffer) -> StalcraftIcon:
         """Deserialize image data from a buffer.
 
         Args:
@@ -45,7 +45,7 @@ class JsonDeserializer[T: StalcraftEntity](Deserializer[T]):
         """
         self.target_type = target_type
 
-    async def deserialize(self, buffer: ReadBuffer) -> T:
+    def deserialize(self, buffer: ReadBuffer) -> T:
         """Deserialize JSON data from a buffer.
 
         Args:

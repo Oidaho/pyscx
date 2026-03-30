@@ -52,7 +52,7 @@ class Deserializer[T: StalcraftEntity | StalcraftIcon](ABC):
     target_type: type[T]
 
     @abstractmethod
-    async def deserialize(self, buffer: ReadBuffer) -> T:
+    def deserialize(self, buffer: ReadBuffer) -> T:
         """Deserialize data from a buffer.
 
         Args:
