@@ -1,8 +1,10 @@
 from pathlib import Path
 
 from pyscx.database import ReadingBackend, RemoteReadingBackend
+from pyscx.models.database import GameItem
 
 from ._builder import Region
+from .backends import JsonDeserializer
 
 
 class RepositoryDatabase:
@@ -20,13 +22,34 @@ class RepositoryDatabase:
             used by default.
         """
         self._backend = reading_backend or RemoteReadingBackend()
-
-    @property
-    def ru(self) -> Region:
-        """Russian game region."""
-        return Region(self._backend, uri=Path("ru"))
+        self._default_deserializer = JsonDeserializer[GameItem](GameItem)
 
     @property
     def glob(self) -> Region:
         """Global game region. (NA, SEA, EU etc.)"""
-        return Region(self._backend, uri=Path("global"))
+        return Region(self._backend, self._default_deserializer, uri=Path("global"))
+
+    @property
+    def ru(self) -> Region:
+        """Russian game region."""
+        return Region(self._backend, self._default_deserializer, uri=Path("ru"))
+
+    @property
+    def eu(self) -> Region:
+        """European game region."""
+        return self.glob
+
+    @property
+    def na(self) -> Region:
+        """North American game region."""
+        return self.glob
+
+    @property
+    def sea(self) -> Region:
+        """Southeast Asian game region."""
+        return self.glob
+
+    @property
+    def nea(self) -> Region:
+        """Northeast Asian game region."""
+        return self.glob
